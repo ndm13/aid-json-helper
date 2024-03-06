@@ -88,7 +88,7 @@
 <header>
     <h2>Story Card Viewer/Editor</h2>
     <section class="io">
-        <input accept="application/json" type="file" bind:files={files} on:change={fileUpdate}/>
+        <input accept="application/json,text/json,.json" type="file" bind:files={files} on:change={fileUpdate}/>
         <button on:click={download}>Save</button>
     </section>
 </header>
