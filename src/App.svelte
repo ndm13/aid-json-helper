@@ -12,9 +12,9 @@
 
     $: filtered = data.filter(c =>
         types.indexOf(c.type) > -1 &&
-        c.title.indexOf(titleContains) > -1 &&
-        c.value.indexOf(valueContains) > -1 &&
-        c.keys.split(',').filter(s => s.toLowerCase().indexOf(keyContains) > -1).length > 0);
+        c.title.toLowerCase().indexOf(titleContains.toLowerCase()) > -1 &&
+        c.value.toLowerCase().indexOf(valueContains.toLowerCase()) > -1 &&
+        c.keys.split(',').filter(s => s.toLowerCase().indexOf(keyContains.toLowerCase()) > -1).length > 0);
 
     function resetFilter() {
         titleContains = valueContains = keyContains = "";
@@ -33,6 +33,15 @@
                     allTypes.length = 0;
                     allTypes.push(...new Set(data.map(c => c.type)));
                     resetFilter();
+                    if (data.length === 0)
+                        alert("This file doesn't contain any story cards!  Make sure you have the right file.");
+                })
+                .catch(e => {
+                    // Destroy the current session anyway to keep from saving under the wrong name
+                    data.length = 0;
+                    resetFilter();
+                    alert("There was an error trying to load this file.  Are you sure it's valid?");
+                    console.error("Caught error when updating file", e);
                 });
         }
     }
@@ -98,10 +107,10 @@
         <fieldset class="searchWithin">
             <label for="title">Title:</label>
             <input name="title" bind:value={titleContains}/>
-            <label for="value">Value:</label>
-            <input name="value" bind:value={valueContains}/>
-            <label for="tags">Tags:</label>
-            <input name="tags" bind:value={keyContains}/>
+            <label for="entry">Entry:</label>
+            <input name="entry" bind:value={valueContains}/>
+            <label for="triggers">Trigger:</label>
+            <input name="triggers" bind:value={keyContains}/>
         </fieldset>
         <fieldset class="type">
             <label for="type">Type:</label>
