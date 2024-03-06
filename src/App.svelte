@@ -66,9 +66,10 @@
     header .io, nav .filter, nav .type {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         gap: 1ex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-around;
     }
 
     nav .searchWithin {

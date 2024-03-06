@@ -8,11 +8,13 @@
 <style>
     section {
         display: flex;
+        box-sizing: border-box;
         flex-direction: column;
         gap: 1ex;
         padding: 1em;
         background-color: rgba(0,0,0,0.5);
-        min-width: 50ex;
+        width: 50ex;
+        max-width: 100%;
     }
     header {
         display: flex;
