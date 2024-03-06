@@ -31,6 +31,7 @@
     textarea {
         display: block;
         width: 100%;
+        height: 6em;
         font-family: sans-serif;
         font-size: smaller;
     }

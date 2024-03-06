@@ -18,7 +18,8 @@
 
     function resetFilter() {
         titleContains = valueContains = keyContains = "";
-        types = allTypes;
+        types.length = 0;
+        types.push(...allTypes);
     }
 
     let files: FileList;
@@ -109,6 +110,7 @@
                     <option selected>{t}</option>
                 {/each}
             </select>
+            <button on:click={()=>types.length = 0}>Clear Types</button>
         </fieldset>
         <button on:click={resetFilter}>Clear Filters</button>
     </section>
