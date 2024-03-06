@@ -48,7 +48,7 @@
         background-color: rgba(127,127,127,0.5);
     }
     .is_cc {
-        background-color: lightgreen;
+        background-color: #f8ae2c;
     }
 </style>
 
