@@ -13,8 +13,7 @@
         gap: 1ex;
         padding: 1em;
         background-color: rgba(0,0,0,0.5);
-        width: 50ex;
-        max-width: 100%;
+        width: 100%;
     }
     header {
         display: flex;
