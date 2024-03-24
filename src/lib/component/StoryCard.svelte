@@ -4,6 +4,7 @@
     export let card: StoryCard;
 
     let editingTriggers = false;
+    let showDescription = false;
 </script>
 
 <style>
@@ -34,12 +35,12 @@
         display: inline-block;
         padding: 0.25ex 0.5ex;
         border-radius: 0.125ex;
-        background-color: rgba(0,0,0,0.25);
-        border: 1px dotted rgba(127,127,127,0.75);
+        background-color: rgba(0, 0, 0, 0.25);
+        border: 1px dotted rgba(127, 127, 127, 0.75);
     }
 
     [contenteditable]:hover, [contenteditable]:focus {
-        background-color: rgba(127,127,127,0.25);
+        background-color: rgba(127, 127, 127, 0.25);
     }
 
     .type {
@@ -68,6 +69,10 @@
         background-color: rgba(127, 127, 127, 0.5);
     }
 
+    .triggers button:last-child {
+        margin-left: auto;
+    }
+
     .is_cc {
         background-color: #f8ae2c;
     }
@@ -93,5 +98,9 @@
             {/each}
         {/if}
         <button on:click={() => {editingTriggers = !editingTriggers;}}>{!editingTriggers ? '✎' : '✔'}</button>
+        <button on:click={() => {showDescription = !showDescription;}}>{!showDescription ? 'Show' : 'Hide'} Description</button>
     </div>
+    {#if showDescription}
+        <textarea class="description" bind:value={card.description}></textarea>
+    {/if}
 </section>
