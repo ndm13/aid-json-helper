@@ -5,6 +5,7 @@
 
     let editingTriggers = false;
     let showDescription = false;
+    let fullScreen = false;
 </script>
 
 <style>
@@ -18,12 +19,25 @@
         width: 100%;
     }
 
+    section.fullScreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.9);
+    }
+
     header {
         display: flex;
         width: 100%;
         justify-content: space-between;
         align-items: center;
         column-gap: 1em;
+    }
+
+    header h3 {
+        flex-grow: 1;
     }
 
     h3, h4 {
@@ -54,6 +68,10 @@
         font-family: sans-serif;
         font-size: smaller;
     }
+    section.fullScreen textarea {
+        height: auto;
+        flex-grow: 1;
+    }
 
     .triggers {
         display: flex;
@@ -78,7 +96,7 @@
     }
 </style>
 
-<section>
+<section class:fullScreen>
     <header>
         <button class:is_cc={card.useForCharacterCreation}
                 title="Use for Character Creator [currently {card.useForCharacterCreation}]"
@@ -86,6 +104,7 @@
         </button>
         <h3 contenteditable="true" class="title" bind:innerText={card.title}>Placeholder Title</h3>
         <span contenteditable="true" class="type" bind:innerText={card.type}>Placeholder Type</span>
+        <button on:click={() => {fullScreen = !fullScreen;}}>{!fullScreen ? '↗' : '↙'}</button>
     </header>
     <textarea class="value" bind:value={card.value}></textarea>
     <div class="triggers">
