@@ -1,11 +1,17 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte';
     import type {StoryCard} from "../model/StoryCard.ts";
 
+    const dispatch = createEventDispatcher();
     export let card: StoryCard;
 
     let editingTriggers = false;
     let showDescription = false;
     let fullScreen = false;
+
+    $: if (!editingTriggers) {
+        dispatch('editTriggers');
+    }
 </script>
 
 <style>
@@ -102,11 +108,11 @@
                 title="Use for Character Creator [currently {card.useForCharacterCreation}]"
                 on:click={() => {card.useForCharacterCreation = !card.useForCharacterCreation}}>✨
         </button>
-        <h3 contenteditable="true" class="title" bind:innerText={card.title}>Placeholder Title</h3>
-        <span contenteditable="true" class="type" bind:innerText={card.type}>Placeholder Type</span>
+        <h3 contenteditable="true" class="title" bind:innerText={card.title} on:focusout={() => dispatch('editTitle')}>Placeholder Title</h3>
+        <span contenteditable="true" class="type" bind:innerText={card.type} on:focusout={() => dispatch('editType')}>Placeholder Type</span>
         <button on:click={() => {fullScreen = !fullScreen;}}>{!fullScreen ? '↗' : '↙'}</button>
     </header>
-    <textarea class="value" bind:value={card.value}></textarea>
+    <textarea class="value" bind:value={card.value} on:focusout={() => dispatch('editValue')}></textarea>
     <div class="triggers">
         <h4>Triggers:</h4>
         {#if editingTriggers}

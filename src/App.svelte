@@ -11,17 +11,52 @@
     let keyContains: string = "";
     let empty: boolean = false;
     let noDescription = false;
+    let sort = "default";
+    let sortAsc = false;
 
-    $: filtered = data
-        .filter(c =>
-            types.indexOf(c.type) > -1 &&
-            c.title.toLowerCase().indexOf(titleContains.toLowerCase()) > -1 &&
-            c.value.toLowerCase().indexOf(valueContains.toLowerCase()) > -1 &&
-            c.keys.split(',').filter(s => s.toLowerCase().indexOf(keyContains.toLowerCase()) > -1).length > 0)
-        .filter(c =>
-            (!empty && !noDescription) ||
-            (empty && c.keys.split(',').filter(s => /^\s*$/gm.test(s)).length > 0) ||
-            (noDescription && (c.useForCharacterCreation == true && /^(\s*|Notes go here.)$/gm.test(c.description))));
+    function getTriggersDefaults() {
+        return getTriggers(data);
+    }
+
+    function getTriggers(data) {
+        return data
+            .map(c => c.keys.split(','))
+            .reduce((a, v) => {
+                v.forEach(t => a[t] = (a[t] || 0) + 1);
+                return a;
+            }, {});
+    }
+
+    $: triggers = getTriggers(data);
+
+    function getFilteredDefaults() {
+        return getFiltered(data, titleContains, valueContains, keyContains, empty, noDescription, sort, sortAsc);
+    }
+    function getFiltered(data, titleContains, valueContains, keyContains, empty, noDescription, sort, sortAsc) {
+        let filtered = data
+            .filter(c =>
+                types.indexOf(c.type) > -1 &&
+                c.title.toLowerCase().indexOf(titleContains.toLowerCase()) > -1 &&
+                c.value.toLowerCase().indexOf(valueContains.toLowerCase()) > -1 &&
+                c.keys.split(',').filter(s => s.toLowerCase().indexOf(keyContains.toLowerCase()) > -1).length > 0)
+            .filter(c =>
+                (!empty && !noDescription) ||
+                (empty && c.keys.split(',').filter(s => /^\s*$/gm.test(s)).length > 0) ||
+                (noDescription && (c.useForCharacterCreation == true && /^(\s*|Notes go here.)$/gm.test(c.description))));
+        return sort === "default" ? filtered : filtered
+            .sort((a, b) => {
+                switch (sort) {
+                    case "alpha":
+                        return (sortAsc ? a.title.toLowerCase() < b.title.toLowerCase() : b.title.toLowerCase() < a.title.toLowerCase()) ? 1 : -1;
+                    case "type":
+                        return (sortAsc ? a.type.toLowerCase() < b.type.toLowerCase() : b.type.toLowerCase() < a.type.toLowerCase()) ? 1 : -1;
+                    case "length":
+                        return !sortAsc ? a.value.length - b.value.length : b.value.length - a.value.length;
+                }
+            });
+    }
+
+    $: filtered = getFiltered(data, titleContains, valueContains, keyContains, empty, noDescription, sort, sortAsc);
 
     function resetFilter() {
         titleContains = valueContains = keyContains = "";
@@ -103,6 +138,25 @@
     nav .searchWithin label {
         place-self: end;
     }
+
+    .triggers {
+        display: flex;
+        gap: 1ex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .triggers kbd {
+        white-space: pre;
+        padding: 0.5ex;
+        border-radius: 0.5ex;
+        background-color: rgba(127, 127, 127, 0.5);
+        cursor: pointer;
+    }
+
+    .triggers kbd.plural {
+        background-color: rgba(255, 127, 127, 0.5);
+    }
 </style>
 <header>
     <h2>Story Card Viewer/Editor</h2>
@@ -133,6 +187,22 @@
         </fieldset>
         <button on:click={resetFilter}>Clear Filters</button>
     </section>
+    <small>Sort:</small>
+    <section class="sort">
+        <span>
+            <input type="radio" id="alpha" name="sort" value="alpha" bind:group={sort}/>
+            <label for="alpha">Alphabetically</label>
+        </span>
+        <span>
+            <input type="radio" id="type" name="sort" value="type" bind:group={sort}/>
+            <label for="type">By type</label>
+        </span>
+        <span>
+            <input type="radio" id="length" name="sort" value="length" bind:group={sort}/>
+            <label for="length">By entry length</label>
+        </span>
+        <button on:click={() => {sortAsc = !sortAsc;filtered = getFilteredDefaults();}}>Sort {sortAsc ? "Descending" : "Ascending"}</button>
+    </section>
     <small>Common Errors:</small>
     <section class="issues">
         <span>
@@ -146,10 +216,21 @@
             <label for="noDescription">No Character Creator description</label>
         </span>
     </section>
+    <small>Triggers:</small>
+    <section class="triggers">
+        {#each Object.keys(triggers) as trigger}
+            <kbd on:click={() => {resetFilter();keyContains = trigger;}}
+                 class:plural={triggers[trigger] > 1}>{trigger}{triggers[trigger] > 1 ? " x" + triggers[trigger] : ""}</kbd>
+        {/each}
+    </section>
 </nav>
 <main>
     {#each filtered as card}
-        <StoryCard card={card}/>
+        <StoryCard card={card}
+                   on:editTriggers={() => triggers = getTriggersDefaults()}
+                   on:editTitle={() => filtered = getFilteredDefaults()}
+                   on:editType={() => filtered = getFilteredDefaults()}
+                   on:editValue={() => filtered = getFilteredDefaults()}/>
     {:else}
         {#if data.length === 0}
             <p>
