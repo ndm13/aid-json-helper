@@ -21,12 +21,15 @@
     }
 
     function getTriggers(data) {
-        return data
+        const triggers = data
             .map(c => c.keys.split(','))
             .reduce((a, v) => {
-                v.forEach(t => a[t] = (a[t] || 0) + 1);
+                v.forEach(t => a[t] ? a[t].count++ : a[t] = {count: 1});
                 return a;
             }, {});
+        const keys = Object.keys(triggers);
+        keys.forEach(t => triggers[t].overlap = keys.filter(k => k.indexOf(t) > -1 && t !== k).length);
+        return triggers;
     }
 
     $: triggers = getTriggers(data);
@@ -175,6 +178,10 @@
     .triggers kbd.plural {
         background-color: rgba(255, 127, 127, 0.5);
     }
+
+    .triggers kbd.overlap {
+        background-color: rgba(255, 191, 127, 0.5);
+    }
 </style>
 <header>
     <h2>Story Card Viewer/Editor</h2>
@@ -243,7 +250,9 @@
         {#if showTriggers}
             {#each Object.keys(triggers) as trigger}
                 <kbd on:click={() => {resetFilter();keyContains = trigger;}}
-                     class:plural={triggers[trigger] > 1}>{trigger}{triggers[trigger] > 1 ? " x" + triggers[trigger] : ""}</kbd>
+                     class:plural={triggers[trigger].count > 1}
+                     class:overlap={triggers[trigger].overlap > 0}>
+                    {trigger}{triggers[trigger].count > 1 ? " x" + triggers[trigger].count : ""}{triggers[trigger].overlap > 0 ? " +" + triggers[trigger].overlap : ""}</kbd>
             {/each}
         {/if}
     </section>
