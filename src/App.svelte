@@ -143,6 +143,20 @@
         place-self: end;
     }
 
+    nav .sort, nav .issues {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1ex;
+        justify-content: center;
+    }
+
+    nav .sort > span, nav .issues > span {
+        display: inline-block;
+        white-space: nowrap;
+        flex-wrap: wrap;
+    }
+
     .triggers {
         display: flex;
         gap: 1ex;
