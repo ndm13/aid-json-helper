@@ -1,8 +1,9 @@
 <script lang="ts">
     import type {StoryCard as StoryCardType} from "./lib/model/StoryCard.ts";
     import StoryCard from "./lib/component/StoryCard.svelte";
+    import Help from "./lib/component/Help.svelte";
 
-    const data: StoryCardType[] = [];
+    let data: StoryCardType[] = [];
 
     $: allTypes = [];
     let types: string[] = [];
@@ -13,6 +14,7 @@
     let noDescription = false;
     let sort = "default";
     let sortAsc = false;
+    let showTriggers = false;
 
     function getTriggersDefaults() {
         return getTriggers(data);
@@ -32,6 +34,7 @@
     function getFilteredDefaults() {
         return getFiltered(data, titleContains, valueContains, keyContains, empty, noDescription, sort, sortAsc);
     }
+
     function getFiltered(data, titleContains, valueContains, keyContains, empty, noDescription, sort, sortAsc) {
         let filtered = data
             .filter(c =>
@@ -107,8 +110,9 @@
         width: 100%;
     }
 
-    header {
+    header, .helpbox {
         margin: 1em;
+        display: block;
     }
 
     nav {
@@ -160,6 +164,9 @@
 </style>
 <header>
     <h2>Story Card Viewer/Editor</h2>
+    <span class="helpbox">
+        <Help/>
+    </span>
     <section class="io">
         <input accept="application/json,text/json,.json" type="file" bind:files={files} on:change={fileUpdate}/>
         <button on:click={download}>Save</button>
@@ -201,7 +208,8 @@
             <input type="radio" id="length" name="sort" value="length" bind:group={sort}/>
             <label for="length">By entry length</label>
         </span>
-        <button on:click={() => {sortAsc = !sortAsc;filtered = getFilteredDefaults();}}>Sort {sortAsc ? "Descending" : "Ascending"}</button>
+        <button on:click={() => {sortAsc = !sortAsc;filtered = getFilteredDefaults();}}>
+            Sort {sortAsc ? "Descending" : "Ascending"}</button>
     </section>
     <small>Common Errors:</small>
     <section class="issues">
@@ -218,11 +226,18 @@
     </section>
     <small>Triggers:</small>
     <section class="triggers">
-        {#each Object.keys(triggers) as trigger}
-            <kbd on:click={() => {resetFilter();keyContains = trigger;}}
-                 class:plural={triggers[trigger] > 1}>{trigger}{triggers[trigger] > 1 ? " x" + triggers[trigger] : ""}</kbd>
-        {/each}
+        {#if showTriggers}
+            {#each Object.keys(triggers) as trigger}
+                <kbd on:click={() => {resetFilter();keyContains = trigger;}}
+                     class:plural={triggers[trigger] > 1}>{trigger}{triggers[trigger] > 1 ? " x" + triggers[trigger] : ""}</kbd>
+            {/each}
+        {/if}
     </section>
+    <span>
+        <button on:click={() => showTriggers = !showTriggers}>
+            {showTriggers ? "Hide" : "Show"} Triggers ({Object.keys(triggers).length})
+        </button>
+    </span>
 </nav>
 <main>
     {#each filtered as card}
