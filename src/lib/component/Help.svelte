@@ -26,8 +26,8 @@
     }
 
     article {
-        width: 80%;
-        min-width: 50em;
+        width: 50em;
+        max-width: 100%;
         margin: 3em auto;
     }
 

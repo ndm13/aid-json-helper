@@ -86,6 +86,10 @@
         align-items: center;
     }
 
+    .triggers input {
+        flex-grow: 1;
+    }
+
     .triggers kbd {
         white-space: pre;
         padding: 0.5ex;
@@ -113,6 +117,7 @@
         <button on:click={() => {fullScreen = !fullScreen;}}>{!fullScreen ? '↗' : '↙'}</button>
     </header>
     <textarea class="value" bind:value={card.value} on:focusout={() => dispatch('editValue')}></textarea>
+    <small>{card.value.length} character{card.value.length === 1 ? "" : "s"}</small>
     <div class="triggers">
         <h4>Triggers:</h4>
         {#if editingTriggers}
@@ -127,5 +132,6 @@
     </div>
     {#if showDescription}
         <textarea class="description" bind:value={card.description}></textarea>
+        <small>{card.description.length} character{card.description.length === 1 ? "" : "s"}</small>
     {/if}
 </section>
