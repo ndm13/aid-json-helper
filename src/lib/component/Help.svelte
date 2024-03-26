@@ -171,8 +171,9 @@
             <p>
                 It displays all the triggers for all the cards in a single chunk. If you have a big story, this can be
                 a LOT of data, which is why it's hidden by default. But it does highlight in red any time you have more
-                than one card mapped to a trigger. If something doesn't look right, you can click on the trigger to
-                show the card that uses it (replacing the Trigger search with that trigger).
+                than one card mapped to a trigger, and orange any time another trigger overlaps that trigger (for
+                instance, "half-elf" overlapping "elf"). If something doesn't look right, you can click on the trigger
+                to show the card that uses it (replacing the Trigger search with that trigger).
             </p>
             <h3>Something's broken/I have a cool idea/I just wanna say thanks</h3>
             <p>
