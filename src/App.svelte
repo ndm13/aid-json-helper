@@ -70,7 +70,18 @@
         types.push(...allTypes);
     }
 
+    function addCard() {
+        data = [{keys:"",value:"",type:"",description:"",useForCharacterCreation:true,title:"New Card"},...data];
+        onDataUpdate();
+    }
+
     let files: FileList;
+
+    function onDataUpdate() {
+        allTypes.length = 0;
+        allTypes.push(...new Set(data.map(c => c.type)));
+        resetFilter();
+    }
 
     async function fileUpdate() {
         if (files) {
@@ -79,9 +90,7 @@
                 .then(c => {
                     data.length = 0;
                     data.push(...c);
-                    allTypes.length = 0;
-                    allTypes.push(...new Set(data.map(c => c.type)));
-                    resetFilter();
+                    onDataUpdate();
                     if (data.length === 0)
                         alert("This file doesn't contain any story cards!  Make sure you have the right file.");
                 })
@@ -189,6 +198,7 @@
         <Help/>
     </span>
     <section class="io">
+        <button on:click={addCard}>Add Card</button>
         <input accept="application/json,text/json,.json" type="file" bind:files={files} on:change={fileUpdate}/>
         <button on:click={download}>Save</button>
     </section>
