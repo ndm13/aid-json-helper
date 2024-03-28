@@ -252,8 +252,9 @@
     </span>
 </nav>
 <main>
+    <!-- Ensure internal changes refresh parent store -->
     {#each $filtered as card}
-        <StoryCard card={card}/>
+        <StoryCard card={card} on:update={() => cards.update(c => c)}/>
     {:else}
         {#if $cards.length === 0}
             <p>

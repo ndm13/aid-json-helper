@@ -8,10 +8,6 @@
     let editingTriggers = false;
     let showDescription = false;
     let fullScreen = false;
-
-    $: if (!editingTriggers) {
-        dispatch('editTriggers');
-    }
 </script>
 
 <style>
@@ -112,16 +108,16 @@
                 title="Use for Character Creator [currently {card.useForCharacterCreation}]"
                 on:click={() => {card.useForCharacterCreation = !card.useForCharacterCreation}}>✨
         </button>
-        <h3 contenteditable="true" class="title" bind:innerText={card.title} on:focusout={() => dispatch('editTitle')}>Placeholder Title</h3>
-        <span contenteditable="true" class="type" bind:innerText={card.type} on:focusout={() => dispatch('editType')}>Placeholder Type</span>
+        <h3 contenteditable="true" class="title" bind:innerText={card.title} on:focusout={() => dispatch("update")}>Placeholder Title</h3>
+        <span contenteditable="true" class="type" bind:innerText={card.type} on:focusout={() => dispatch("update")}>Placeholder Type</span>
         <button on:click={() => {fullScreen = !fullScreen;}}>{!fullScreen ? '↗' : '↙'}</button>
     </header>
-    <textarea class="value" bind:value={card.value} on:focusout={() => dispatch('editValue')}></textarea>
+    <textarea class="value" bind:value={card.value} on:focusout={() => dispatch("update")}></textarea>
     <small>{card.value.length} character{card.value.length === 1 ? "" : "s"}</small>
     <div class="triggers">
         <h4>Triggers:</h4>
         {#if editingTriggers}
-            <input type="text" bind:value={card.keys}/>
+            <input type="text" bind:value={card.keys} on:focusout={() => dispatch("update")}/>
         {:else if (card.keys.length === 0)}<em>No Triggers!</em>{:else}
             {#each card.keys.split(',') as key}
                 <kbd>{key}</kbd>
@@ -131,7 +127,7 @@
         <button on:click={() => {showDescription = !showDescription;}}>{!showDescription ? 'Show' : 'Hide'} Description</button>
     </div>
     {#if showDescription}
-        <textarea class="description" bind:value={card.description}></textarea>
+        <textarea class="description" bind:value={card.description} on:focusout={() => dispatch("update")}></textarea>
         <small>{card.description.length} character{card.description.length === 1 ? "" : "s"}</small>
     {/if}
 </section>
