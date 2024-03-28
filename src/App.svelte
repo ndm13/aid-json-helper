@@ -19,6 +19,17 @@
         });
     }
 
+    function getNewCard(): StoryCardType {
+        return {
+            keys: "",
+            value: "",
+            type: "placeholder",
+            description: "",
+            useForCharacterCreation: true,
+            title: "New Card"
+        };
+    }
+
     export const cards = writable<StoryCardType>([]);
 
     const triggers = derived(cards, cards => {
@@ -178,6 +189,7 @@
         <Help/>
     </span>
     <section class="io">
+        <button on:click={() => {$cards = [getNewCard(), ...$cards]; $filter.types.indexOf("placeholder") > -1 || ($filter.types = ["placeholder", ...$filter.types]);}}>Add Card</button>
         <input accept="application/json,text/json,.json" type="file" bind:files={files} on:change={fileUpdate}/>
         <button on:click={download}>Save</button>
     </section>
@@ -254,7 +266,9 @@
 <main>
     <!-- Ensure internal changes refresh parent store -->
     {#each $filtered as card}
-        <StoryCard card={card} on:update={() => cards.update(c => c)}/>
+        <StoryCard card={card}
+                   on:update={() => cards.update(c => c)}
+                   on:delete={() => cards.update(c => c.filter(c => c !== card))}/>
     {:else}
         {#if $cards.length === 0}
             <p>

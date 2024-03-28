@@ -1,6 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
     import type {StoryCard} from "../model/StoryCard.ts";
+    import Modal from "./Modal.svelte";
 
     const dispatch = createEventDispatcher();
     export let card: StoryCard;
@@ -8,6 +9,7 @@
     let editingTriggers = false;
     let showDescription = false;
     let fullScreen = false;
+    let deleting = false;
 </script>
 
 <style>
@@ -27,7 +29,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0,0,0,0.9);
+        background-color: rgba(0, 0, 0, 0.9);
     }
 
     header {
@@ -70,6 +72,7 @@
         font-family: sans-serif;
         font-size: smaller;
     }
+
     section.fullScreen textarea {
         height: auto;
         flex-grow: 1;
@@ -104,6 +107,7 @@
 
 <section class:fullScreen>
     <header>
+        <button title="Delete story card" on:click={() => deleting = true}>🗑</button>
         <button class:is_cc={card.useForCharacterCreation}
                 title="Use for Character Creator [currently {card.useForCharacterCreation}]"
                 on:click={() => {card.useForCharacterCreation = !card.useForCharacterCreation}}>✨
@@ -131,3 +135,12 @@
         <small>{card.description.length} character{card.description.length === 1 ? "" : "s"}</small>
     {/if}
 </section>
+{#if deleting}
+    <Modal title="Delete card '{card.title}'?"
+           options={["Yes","No"]}
+           on:optionYes={() => {dispatch("delete"); deleting = false;}}
+           on:optionNo={() => deleting = false}
+           on:close={() => deleting = false}>
+        <p>Are you sure you want to delete this card?</p>
+    </Modal>
+{/if}
