@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import {createEventDispatcher} from 'svelte';
     import type {StoryCard} from "../model/StoryCard.ts";
     import Modal from "./Modal.svelte";
 
@@ -112,7 +112,8 @@
                 title="Use for Character Creator [currently {card.useForCharacterCreation}]"
                 on:click={() => {card.useForCharacterCreation = !card.useForCharacterCreation}}>✨
         </button>
-        <h3 contenteditable="true" class="title" bind:innerText={card.title} on:focusout={() => dispatch("update")}>Placeholder Title</h3>
+        <h3 contenteditable="true" class="title" bind:innerText={card.title} on:focusout={() => dispatch("update")}>
+            Placeholder Title</h3>
         <span contenteditable="true" class="type" bind:innerText={card.type} on:focusout={() => dispatch("update")}>Placeholder Type</span>
         <button on:click={() => {fullScreen = !fullScreen;}}>{!fullScreen ? '↗' : '↙'}</button>
     </header>
@@ -128,7 +129,9 @@
             {/each}
         {/if}
         <button on:click={() => {editingTriggers = !editingTriggers;}}>{!editingTriggers ? '✎' : '✔'}</button>
-        <button on:click={() => {showDescription = !showDescription;}}>{!showDescription ? 'Show' : 'Hide'} Description</button>
+        <button on:click={() => {showDescription = !showDescription;}}>{!showDescription ? 'Show' : 'Hide'}
+            Description
+        </button>
     </div>
     {#if showDescription}
         <textarea class="description" bind:value={card.description} on:focusout={() => dispatch("update")}></textarea>

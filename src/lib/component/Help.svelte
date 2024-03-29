@@ -62,6 +62,10 @@
                 a section labeled Story Card Management (if you're on mobile, it may ask you to use your browser for
                 this: go ahead and switch). Click the gray Export button to get your cards!
             </p>
+            <p>
+                Alternatively, you can build everything right here! There's an Add Card button next to the file upload
+                button in the header area. Clicking that will create a blank card and add it to the working set.
+            </p>
             <h3>And how do I load my changes?</h3>
             <p>
                 It's the same thing, except click the scary red Import button and upload the edited file! You can save
@@ -82,6 +86,11 @@
                 Some points to note:
             </p>
             <ul>
+                <li>
+                    The 🗑 icon button lets you delete a story card. It pops up a nice big warning message asking if
+                    you're sure, just to be safe. Clicking yes on the sample card won't have any effect, but on real
+                    cards it will remove it from the set.
+                </li>
                 <li>
                     The ✨ icon button shows whether the card is visible in Character Creation. It's highlighted orange
                     if so, and shows the normal color if not. If you don't use Character Creation, you can ignore this:
