@@ -5,12 +5,25 @@
     import StoryCard from "./lib/component/StoryCard.svelte";
     import Help from "./lib/component/Help.svelte";
     import Filter from "./lib/component/Filter.svelte";
-    import {newCard, newFilterSupplier} from "./lib/util/suppliers.ts";
+    import IoPanel from "./lib/component/IoPanel.svelte";
 
     const cards = writable<StoryCardType>([]);
     const types = derived(cards, cards => [...new Set(cards.map(c => c.type))]);
 
-    const filter = resettable(newFilterSupplier(types));
+    const filter = resettable(() => {
+        return structuredClone({
+            title: "",
+            value: "",
+            key: "",
+            types: $types,
+            empty: false,
+            noDescription: false,
+            sort: {
+                mode: "default",
+                asc: true
+            }
+        });
+    });
 
     const filtered = derived([cards, filter], ([cards, filter]) => {
         let filtered = cards
@@ -27,44 +40,14 @@
             .sort((a, b) => {
                 switch (filter.sort.mode) {
                     case "alpha":
-                        return (filter.sort.asc ? a.title.toLowerCase() < b.title.toLowerCase() : b.title.toLowerCase() < a.title.toLowerCase()) ? 1 : -1;
+                        return (filter.sort.asc ? a.title.toLowerCase() > b.title.toLowerCase() : b.title.toLowerCase() > a.title.toLowerCase()) ? 1 : -1;
                     case "type":
-                        return (filter.sort.asc ? a.type.toLowerCase() < b.type.toLowerCase() : b.type.toLowerCase() < a.type.toLowerCase()) ? 1 : -1;
+                        return (filter.sort.asc ? a.type.toLowerCase() > b.type.toLowerCase() : b.type.toLowerCase() > a.type.toLowerCase()) ? 1 : -1;
                     case "length":
-                        return !filter.sort.asc ? a.value.length - b.value.length : b.value.length - a.value.length;
+                        return filter.sort.asc ? a.value.length - b.value.length : b.value.length - a.value.length;
                 }
             });
     });
-
-    let files: FileList;
-
-    async function fileUpdate() {
-        if (files) {
-            await files[0].text()
-                .then(t => JSON.parse(t))
-                .then(c => {
-                    $cards = c;
-                    filter.reset();
-                    if ($cards.length === 0)
-                        alert("This file doesn't contain any story cards!  Make sure you have the right file.");
-                })
-                .catch(e => {
-                    // Destroy the current session anyway to keep from saving under the wrong name
-                    $cards = [];
-                    alert("There was an error trying to load this file.  Are you sure it's valid?");
-                    console.error("Caught error when updating file", e);
-                });
-        }
-    }
-
-    function download() {
-        const helper = document.createElement('a') as HTMLAnchorElement;
-        const url = URL.createObjectURL(new Blob([JSON.stringify($cards)], {type: "application/json"}));
-        helper.download = files ? files[0].name : "cards.json";
-        helper.href = url;
-        helper.click();
-        URL.revokeObjectURL(url);
-    }
 </script>
 
 <style>
@@ -75,36 +58,33 @@
         width: 100%;
     }
 
-    header, .helpbox {
-        margin: 1em;
-        display: block;
+    main > p {
+        width: 100ex;
+        max-width: 100%;
+        margin: auto;
     }
 
-    header .io {
+    header {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 1ex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-around;
+        gap: 1em;
+        margin: 1em;
+    }
+
+    h2 {
+        margin: 0;
+        padding: 0;
     }
 </style>
 <header>
     <h2>Story Card Viewer/Editor</h2>
-    <span class="helpbox">
-        <Help/>
-    </span>
-    <section class="io">
-        <button on:click={() => {$cards = [newCard(), ...$cards]; $filter.types.indexOf("placeholder") > -1 || ($filter.types = ["placeholder", ...$filter.types]);}}>
-            Add Card
-        </button>
-        <input accept="application/json,text/json,.json" type="file" bind:files={files} on:change={fileUpdate}/>
-        <button on:click={download}>Save</button>
-    </section>
-    <em>Showing {$filtered.length} entries out of {$cards.length}</em>
+    <Help/>
+    <IoPanel cards={cards} filter={filter} filtered={filtered}/>
 </header>
 <Filter cards={cards} types={types} filter={filter}/>
 <main>
+    <em>Showing {$filtered.length} entries out of {$cards.length}</em>
     <!-- Ensure internal changes refresh parent store -->
     {#each $filtered as card}
         <StoryCard card={card}

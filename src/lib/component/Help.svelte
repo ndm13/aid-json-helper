@@ -22,7 +22,9 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.9);
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(1ex);
+        z-index: 999;
     }
 
     article {
@@ -73,6 +75,35 @@
                 import. Note that importing story cards will OVERWRITE ALL YOUR EXISTING CARDS IN THE STORY, so be SURE
                 you select the right scenario/adventure/file when importing!
             </p>
+            <h3>That's the AI Dungeon side. What about here?</h3>
+            <p>
+                There's a nice row of buttons along the top:
+            </p>
+            <ul>
+                <li>
+                    <strong>New Card</strong> creates a card directly, allowing you to edit its placeholder data right
+                    here in the tool. This will let you create sets from scratch or add cards to existing sets.
+                </li>
+                <li>
+                    <strong>Import File</strong> adds an exported JSON file to the current set of cards.
+                </li>
+                <li>
+                    <strong>Open File</strong> <em>replaces</em> the current set of cards with the contents of an
+                    exported JSON file. You'll get a nice warning to confirm that this is what you want to do.
+                </li>
+                <li>
+                    <strong>Save All Cards</strong> writes all the cards in the current session to a JSON file that is
+                    compatible with AI Dungeon (and this tool, obviously).
+                </li>
+                <li>
+                    <strong>Save Filtered Cards</strong> does the same thing, but only for the cards that are being
+                    shown by the active filter.
+                </li>
+                <li>
+                    <strong>Clear Cards</strong> removes every card in the current session. Don't worry, this one comes
+                    with a nice warning too. Refreshing the page will do the same thing, but without warning you!
+                </li>
+            </ul>
             <h3>That's good and all, but how do I edit a story card?</h3>
             <p>
                 Each card pops up with a little editor window. Any changes you make here will instantly update the JSON,
@@ -119,11 +150,15 @@
                     it for the card.
                 </li>
             </ul>
-            <h3>What's this about filters?</h3>
+            <h3>There are a bunch of tabs, what do those do?</h3>
             <p>
-                Seeing all your cards at once might not be what you want, especially if you have dozens or even hundreds
-                and want to find something specific. Filters stack on top of each other, meaning you can have multiple
-                active at once and see where they overlap.
+                This is a central point for manipulating the list of cards. Everything in here filters the list of cards
+                that you see.
+            </p>
+            <h4>Filter</h4>
+            <p>
+                This tab has the most common ways to narrow down your cards: searching within card titles, entries, and
+                triggers, as well as selecting from specific types.
             </p>
             <ul>
                 <li>
@@ -140,8 +175,9 @@
                     When you're done, you can click <strong>Clear Filters</strong> to reset to the defaults.
                 </li>
             </ul>
+            <h4>Sort</h4>
             <p>
-                You can also sort the cards in a few ways:
+                This tab lets you change the order in which the cards are displayed.
             </p>
             <ul>
                 <li>
@@ -158,8 +194,9 @@
             <p>
                 To change the sort direction, click the Sort Ascending (or Sort Descending) button.
             </p>
+            <h4>Fix Common Errors</h4>
             <p>
-                You can also show cards that match some common errors or oversights:
+                This tab lets you see any cards that match some common errors and oversights.
             </p>
             <ul>
                 <li>
@@ -176,14 +213,26 @@
                     <kbd>Notes go here.</kbd>.
                 </li>
             </ul>
-            <h3>Speaking of triggers, what's that Show Triggers button do?</h3>
+            <h4>Triggers</h4>
             <p>
-                It displays all the triggers for all the cards in a single chunk. If you have a big story, this can be
-                a LOT of data, which is why it's hidden by default. But it does highlight in red any time you have more
-                than one card mapped to a trigger, and orange any time another trigger overlaps that trigger (for
-                instance, "half-elf" overlapping "elf"). If something doesn't look right, you can click on the trigger
-                to show the card that uses it (replacing the Trigger search with that trigger).
+                This tab lists all the triggers for all of the loaded cards. Clicking on a trigger will place it in the
+                trigger filter box on the Filter tab, showing you only cards that match that trigger. It also highlights
+                some possible oversights.
             </p>
+            <ul>
+                <li>
+                    Triggers highlighted in <strong>red</strong> are duplicates. This means that more than one card uses
+                    this trigger. There are times when this is what you want, but usually it's wrong. They include an
+                    x<em>n</em> indicator telling you how many cards are affected.
+                </li>
+                <li>
+                    Triggers highlighted in <strong>orange</strong> are overlapping. This means that another trigger in
+                    the list contains this trigger, effectively making it a one-way duplicate (e.g. the trigger "elf"
+                    will also trigger "half-elf"). This may be necessary, or even desired, but often means you should
+                    rethink your trigger design. They include a +<em>n</em> indicator telling you how many cards are
+                    affected.
+                </li>
+            </ul>
             <h3>Something's broken/I have a cool idea/I just wanna say thanks</h3>
             <p>
                 Hop in the <a target="_blank" href="https://discord.com/invite/HB2YBZYjyf">AI Dungeon Discord server</a>

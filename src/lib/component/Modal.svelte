@@ -14,12 +14,15 @@ main {
     left: 0;
     bottom: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(127, 127, 127, 0.1);
+    backdrop-filter: blur(1ex);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 99;
 }
+
 header, footer {
     display: flex;
     flex-direction: row;
@@ -36,7 +39,7 @@ footer {
 main > * {
     width: 80ex;
     max-width: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: var(--color-dark);
     padding: 3ex;
 }
 

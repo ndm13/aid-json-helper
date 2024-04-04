@@ -20,7 +20,9 @@
         gap: 1ex;
         padding: 1em;
         background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(1ex);
         width: 100%;
+        border-radius: 1ex;
     }
 
     section.fullScreen {
@@ -101,7 +103,8 @@
     }
 
     .is_cc {
-        background-color: #f8ae2c;
+        background-color: var(--color-highlight);
+        color: black;
     }
 </style>
 
