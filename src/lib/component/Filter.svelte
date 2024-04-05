@@ -1,8 +1,6 @@
 <script lang="ts">
     import {derived} from 'svelte/store';
-
-    // Svelte stores
-    export let cards, types, filter;
+    import {cards, filter, types} from "../stores.ts";
 
     const triggers = derived(cards, cards => {
         const triggers = cards

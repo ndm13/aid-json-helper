@@ -2,8 +2,7 @@
     import {newCard} from "../util/suppliers.ts";
     import type {StoryCard} from "../model/StoryCard.ts";
     import Modal from "./Modal.svelte";
-
-    export let cards, filter, filtered;
+    import {cards, filter, filtered} from "../stores.ts";
 
     function addCard() {
         $cards = [newCard(), ...$cards];
