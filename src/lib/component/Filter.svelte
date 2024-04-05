@@ -18,7 +18,9 @@
         });
     });
 
-    let tab = "filter";
+    enum Tab { FILTER, SORT, ERROR, TRIGGER }
+
+    let tab = Tab.FILTER;
 </script>
 
 <style>
@@ -93,14 +95,14 @@
         background-color: #840;
     }
 
-    #tabbar {
+    .tabs {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         column-gap: 1ex;
     }
 
-    #tabbar span {
+    .tabs span {
         display: inline-block;
         background-color: var(--color-dark);
         border-radius: 1ex 1ex 0 0;
@@ -111,7 +113,7 @@
         user-select: none;
     }
 
-    #tabbar span.focus, nav > section {
+    .tabs span.focus, nav > section {
         background-color: var(--color-light);
     }
 
@@ -122,14 +124,17 @@
 </style>
 
 <nav>
-    <div id="tabbar">
-        <span class:focus={tab === "filter"} on:click={() => tab = "filter"}>Filter</span>
-        <span class:focus={tab === "sort"} on:click={() => tab = "sort"}>Sort</span>
-        <span class:focus={tab === "error"} on:click={() => tab = "error"}>Fix Common Errors</span>
-        <span class:focus={tab === "trigger"}
-              on:click={() => tab = "trigger"}>Triggers ({Object.keys($triggers).length})</span>
+    <div class="tabs">
+        <span class:focus={tab === Tab.FILTER}
+              on:click={() => tab = Tab.FILTER}>Filter</span>
+        <span class:focus={tab === Tab.SORT}
+              on:click={() => tab = Tab.SORT}>Sort</span>
+        <span class:focus={tab === Tab.ERROR}
+              on:click={() => tab = Tab.ERROR}>Fix Common Errors</span>
+        <span class:focus={tab === Tab.TRIGGER}
+              on:click={() => tab = Tab.TRIGGER}>Triggers ({Object.keys($triggers).length})</span>
     </div>
-    {#if tab === "filter"}
+    {#if tab === Tab.FILTER}
         <section class="filter">
             <fieldset class="searchWithin">
                 <label for="title">Title:</label>
@@ -150,26 +155,29 @@
             </fieldset>
             <button on:click={() => filter.reset()}>Clear Filters</button>
         </section>
-    {:else if tab === "sort"}
+    {:else if tab === Tab.SORT}
         <section class="sort">
             <div class="rowflow">
                 <span>
-                    <input type="radio" id="alpha" name="sort" value={FilterSortMode.ALPHA} bind:group={$filter.sort.mode}/>
+                    <input type="radio" id="alpha" name="sort" value={FilterSortMode.ALPHA}
+                           bind:group={$filter.sort.mode}/>
                     <label for="alpha">Alphabetically</label>
                 </span>
-                    <span>
-                    <input type="radio" id="type" name="sort" value={FilterSortMode.TYPE} bind:group={$filter.sort.mode}/>
+                <span>
+                    <input type="radio" id="type" name="sort" value={FilterSortMode.TYPE}
+                           bind:group={$filter.sort.mode}/>
                     <label for="type">By type</label>
                 </span>
-                    <span>
-                    <input type="radio" id="length" name="sort" value={FilterSortMode.LENGTH} bind:group={$filter.sort.mode}/>
+                <span>
+                    <input type="radio" id="length" name="sort" value={FilterSortMode.LENGTH}
+                           bind:group={$filter.sort.mode}/>
                     <label for="length">By entry length</label>
                 </span>
             </div>
             <button on:click={() => $filter.sort.asc = !$filter.sort.asc}>
                 Sort {$filter.sort.asc ? "Descending" : "Ascending"}</button>
         </section>
-    {:else if tab === "error"}
+    {:else if tab === Tab.ERROR}
         <section class="issues rowflow">
                 <span>
                     <input title="Shows cards with empty or missing triggers. Empty triggers will cause cards to trigger constantly, while missing triggers will cause them to never trigger."
@@ -189,7 +197,8 @@
                 <kbd on:click={() => {filter.reset(); trigger.key === "" ? $filter.empty = true : $filter.key = trigger.key;}}
                      class:plural={trigger.count > 1}
                      class:overlap={trigger.overlap > 0}>
-                    {trigger.key}{trigger.count > 1 ? " x" + trigger.count : ""}{trigger.overlap > 0 ? " +" + trigger.overlap : ""}</kbd>
+                    {trigger.key}{trigger.count > 1 ? " x" + trigger.count : ""}{trigger.overlap > 0 ? " +" + trigger.overlap : ""}
+                </kbd>
             {:else}
                 <p>No triggers loaded!</p>
             {/each}

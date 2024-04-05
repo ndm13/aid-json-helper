@@ -33,6 +33,7 @@
         padding: 0;
     }
 </style>
+
 <header>
     <h2>Story Card Viewer/Editor</h2>
     <Help/>
