@@ -1,6 +1,7 @@
 <script lang="ts">
     import {derived} from 'svelte/store';
     import {cards, filter, types} from "../stores.ts";
+    import {FilterSortMode} from "../model/Filter.ts";
 
     const triggers = derived(cards, cards => {
         const triggers = cards
@@ -153,15 +154,15 @@
         <section class="sort">
             <div class="rowflow">
                 <span>
-                    <input type="radio" id="alpha" name="sort" value="alpha" bind:group={$filter.sort.mode}/>
+                    <input type="radio" id="alpha" name="sort" value={FilterSortMode.ALPHA} bind:group={$filter.sort.mode}/>
                     <label for="alpha">Alphabetically</label>
                 </span>
                     <span>
-                    <input type="radio" id="type" name="sort" value="type" bind:group={$filter.sort.mode}/>
+                    <input type="radio" id="type" name="sort" value={FilterSortMode.TYPE} bind:group={$filter.sort.mode}/>
                     <label for="type">By type</label>
                 </span>
                     <span>
-                    <input type="radio" id="length" name="sort" value="length" bind:group={$filter.sort.mode}/>
+                    <input type="radio" id="length" name="sort" value={FilterSortMode.LENGTH} bind:group={$filter.sort.mode}/>
                     <label for="length">By entry length</label>
                 </span>
             </div>

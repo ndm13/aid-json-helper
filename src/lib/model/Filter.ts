@@ -6,7 +6,9 @@ export type Filter = {
     empty: boolean,
     noDescription: boolean,
     sort: {
-        mode: string,
+        mode: FilterSortMode,
         asc: boolean
     }
 }
+
+export enum FilterSortMode { ALPHA, TYPE, LENGTH, NONE }
