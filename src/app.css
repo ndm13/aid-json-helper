@@ -48,7 +48,6 @@ button:hover {
 
 button:active {
     background-color: var(--color-highlight);
-    cursor: wait;
 }
 
 button:disabled {

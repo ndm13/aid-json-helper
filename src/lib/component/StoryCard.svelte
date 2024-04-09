@@ -2,10 +2,14 @@
     import {createEventDispatcher} from 'svelte';
     import type {StoryCard} from "../model/StoryCard.ts";
     import Modal from "./Modal.svelte";
+    import StoryCardController from "../controller/StoryCardController.ts";
 
     const dispatch = createEventDispatcher();
     export let card: StoryCard;
 
+    $: controller = new StoryCardController(card);
+
+    let actionMenu = false;
     let editingTriggers = false;
     let showDescription = false;
     let fullScreen = false;
@@ -40,6 +44,11 @@
         justify-content: space-between;
         align-items: center;
         column-gap: 1em;
+    }
+
+    header.actionMenu {
+        justify-content: flex-start;
+        align-items: flex-start;
     }
 
     header h3 {
@@ -109,16 +118,23 @@
 </style>
 
 <section class:fullScreen>
-    <header>
-        <button title="Delete story card" on:click={() => deleting = true}>🗑</button>
-        <button class:is_cc={card.useForCharacterCreation}
-                title="Use for Character Creator [currently {card.useForCharacterCreation}]"
-                on:click={() => {card.useForCharacterCreation = !card.useForCharacterCreation}}>✨
-        </button>
-        <h3 contenteditable="true" class="title" bind:innerText={card.title} on:focusout={() => dispatch("update")}>
-            Placeholder Title</h3>
-        <span contenteditable="true" class="type" bind:innerText={card.type} on:focusout={() => dispatch("update")}>Placeholder Type</span>
-        <button on:click={() => {fullScreen = !fullScreen;}}>{!fullScreen ? '↗' : '↙'}</button>
+    <header class:actionMenu>
+        <button title="Toggle actions" on:click={() => actionMenu = !actionMenu}>⋯</button>
+        {#if actionMenu}
+            <button on:click={() => deleting = true}>Delete</button>
+            <button on:click={() => controller.copyJson()}>Copy JSON</button>
+            <button on:click={() => controller.copyMarkdown()}>Copy Markdown</button>
+        {:else}
+            <button class:is_cc={card.useForCharacterCreation}
+                    title="Use for Character Creator [currently {card.useForCharacterCreation}]"
+                    on:click={() => {card.useForCharacterCreation = !card.useForCharacterCreation}}>✨
+            </button>
+            <h3 contenteditable="true" class="title" bind:innerText={card.title} on:focusout={() => dispatch("update")}>
+                Placeholder Title</h3>
+            <span contenteditable="true" class="type" bind:innerText={card.type} on:focusout={() => dispatch("update")}>
+                Placeholder Type</span>
+            <button on:click={() => {fullScreen = !fullScreen;}}>{!fullScreen ? '↗' : '↙'}</button>
+        {/if}
     </header>
     <textarea class="value" bind:value={card.value} on:focusout={() => dispatch("update")}></textarea>
     <small>{card.value.length} character{card.value.length === 1 ? "" : "s"}</small>

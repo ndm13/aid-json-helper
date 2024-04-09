@@ -118,9 +118,24 @@
             </p>
             <ul>
                 <li>
-                    The 🗑 icon button lets you delete a story card. It pops up a nice big warning message asking if
-                    you're sure, just to be safe. Clicking yes on the sample card won't have any effect, but on real
-                    cards it will remove it from the set.
+                    The ⋯ icon toggles a drawer of card actions.
+                    <ul>
+                        <li>
+                            <strong>Delete</strong> lets you delete a story card. It pops up a nice big warning message
+                            asking if you're sure, just to be safe. Clicking yes on the sample card won't have any
+                            effect, but on real cards it will remove it from the set.
+                        </li>
+                        <li>
+                            <strong>Copy JSON</strong> puts the current card's JSON on your clipboard. Useful if you're
+                            moving it to other programs or sharing the data.
+                        </li>
+                        <li>
+                            <strong>Copy Markdown</strong> puts the current card's title, entry text, and trigger list
+                            on your clipboard as Markdown formatted text (the same format Discord and Obsidian use).
+                            Useful if you're sharing it with members of the community or moving it to Markdown-based
+                            tools.
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     The ✨ icon button shows whether the card is visible in Character Creation. It's highlighted orange
