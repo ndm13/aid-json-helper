@@ -216,9 +216,11 @@
             <ul>
                 <li>
                     <strong>Empty triggers:</strong> This will show cards that trigger on whitespace, or on empty text.
-                    The AI will generally ALWAYS load these cards. It will also match cards with no triggers: this will
-                    have the opposite effect, where the AI will NEVER load these cards. Most of the time, this isn't
-                    what you want.
+                    The AI will generally ALWAYS load these cards. Most of the time, this isn't what you want.
+                </li>
+                <li>
+                    <strong>Missing triggers:</strong> This will show cards with no triggers. The AI will NEVER load
+                    these cards. Most of the time, this also isn't what you want.
                 </li>
                 <li>
                     <strong>No Character Creator description:</strong> <em>If you are using Character Creator,</em> then
@@ -228,6 +230,11 @@
                     <kbd>Notes go here.</kbd>.
                 </li>
             </ul>
+            <p>
+                Additionally, there's a quick action available to <strong>Remove All Empty Triggers</strong>. This will
+                go through your cards and find the ones that have empty triggers, list them for you, and offer to clear
+                out just the empty trigger part of it. All other triggers will remain in place.
+            </p>
             <h4>Triggers</h4>
             <p>
                 This tab lists all the triggers for all of the loaded cards. Clicking on a trigger will place it in the

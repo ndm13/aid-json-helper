@@ -195,7 +195,8 @@
             </div>
             <small>Automatically fix:</small>
             <div class="rowflow">
-                <button on:click={() => removeTriggers = true} disabled={$cardsWithEmptyTriggers.length === 0}>Remove All Empty Triggers</button>
+                <button on:click={() => removeTriggers = true} disabled={$cardsWithEmptyTriggers.length === 0}>
+                    Remove All Empty Triggers ({$cardsWithEmptyTriggers.length})</button>
             </div>
         </section>
     {:else}
