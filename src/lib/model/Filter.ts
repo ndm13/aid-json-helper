@@ -4,6 +4,7 @@ export type Filter = {
     key: string,
     types: string[],
     empty: boolean,
+    missing: boolean,
     noDescription: boolean,
     sort: {
         mode: FilterSortMode,

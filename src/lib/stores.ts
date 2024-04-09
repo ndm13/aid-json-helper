@@ -3,6 +3,7 @@ import resettable from "./util/resettable.ts";
 import type {StoryCard} from "./model/StoryCard.ts";
 import type {Filter} from "./model/Filter.ts";
 import {FilterSortMode} from "./model/Filter.ts";
+import {emptyTriggers, noDescription, keysContain, valueContains, titleContains} from "./util/FilterLogic.ts";
 
 export const cards = writable<StoryCard[]>([]);
 export const types = derived(cards, cards => [...new Set(cards.map(c => c.type))]);
@@ -24,13 +25,16 @@ export const filtered = derived([cards, filter], ([cards, filter]) => {
     const filtered = cards
         .filter(card =>
             filter.types.indexOf(card.type) > -1 &&
-            card.title.toLowerCase().indexOf(filter.title.toLowerCase()) > -1 &&
-            card.value.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 &&
-            card.keys.split(',').filter(s => s.toLowerCase().indexOf(filter.key.toLowerCase()) > -1).length > 0)
-        .filter(card =>
-            (!filter.empty && !filter.noDescription) ||
-            (filter.empty && card.keys.split(',').filter(s => /^\s*$/gm.test(s)).length > 0) ||
-            (filter.noDescription && (card.useForCharacterCreation == true && /^(\s*|Notes go here.)$/gm.test(card.description))));
+            titleContains(card, filter.title) &&
+            valueContains(card, filter.value) &&
+            keysContain(card, filter.key) &&
+            (
+                (!filter.missing && !filter.empty && !filter.noDescription) ||
+                (filter.missing && card.keys.length === 0) ||
+                (filter.empty && emptyTriggers(card)) ||
+                (filter.noDescription && noDescription(card))
+            )
+        );
     return filter.sort.mode === FilterSortMode.NONE ? filtered : filtered
         .sort((a, b) => {
             switch (filter.sort.mode) {

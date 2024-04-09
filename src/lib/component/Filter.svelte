@@ -1,26 +1,16 @@
 <script lang="ts">
-    import {derived} from 'svelte/store';
-    import {cards, filter, types} from "../stores.ts";
+    import {filter, types} from "../stores.ts";
     import {FilterSortMode} from "../model/Filter.ts";
+    import Modal from "./Modal.svelte";
+    import FilterController from "../controller/FilterController.ts";
 
-    const triggers = derived(cards, cards => {
-        const triggers = cards
-            .map(c => c.keys.split(','))
-            .reduce((a, v) => {
-                v.forEach(t => a[t] ? a[t].count++ : a[t] = {count: 1});
-                return a;
-            }, {});
-        const keys = Object.keys(triggers);
-        keys.forEach(t => triggers[t].overlap = keys.filter(k => k.indexOf(t) > -1 && t !== k).length);
-        return Object.entries(triggers).map(([k, v]) => {
-            v.key = k;
-            return v;
-        });
-    });
+    const controller = new FilterController();
+    const {triggers, cardsWithEmptyTriggers} = controller;
 
     enum Tab { FILTER, SORT, ERROR, TRIGGER }
 
     let tab = Tab.FILTER;
+    let removeTriggers = false;
 </script>
 
 <style>
@@ -51,7 +41,7 @@
         place-self: end;
     }
 
-    .sort {
+    .sort, .issues {
         display: flex;
         flex-direction: column;
         gap: 1ex;
@@ -121,6 +111,10 @@
         padding: 1ex 1em;
         border-radius: 0 1ex 1ex 1ex;
     }
+
+    ul {
+        text-align: left;
+    }
 </style>
 
 <nav>
@@ -157,6 +151,7 @@
         </section>
     {:else if tab === Tab.SORT}
         <section class="sort">
+            <small>Sorting type:</small>
             <div class="rowflow">
                 <span>
                     <input type="radio" id="alpha" name="sort" value={FilterSortMode.ALPHA}
@@ -178,18 +173,30 @@
                 Sort {$filter.sort.asc ? "Descending" : "Ascending"}</button>
         </section>
     {:else if tab === Tab.ERROR}
-        <section class="issues rowflow">
+        <section class="issues">
+            <small>Show cards that match:</small>
+            <div class="rowflow">
                 <span>
-                    <input title="Shows cards with empty or missing triggers. Empty triggers will cause cards to trigger constantly, while missing triggers will cause them to never trigger."
+                    <input title="Shows cards with empty. Empty triggers will cause cards to trigger constantly."
                            type="checkbox" id="empty" name="empty" bind:checked={$filter.empty}/>
                     <label for="empty">Empty triggers</label>
                 </span>
-            <span>
+                <span>
+                    <input title="Shows cards with missing triggers. Missing triggers will cause cards to never trigger."
+                           type="checkbox" id="missing" name="missing" bind:checked={$filter.missing}/>
+                    <label for="missing">Missing triggers</label>
+                </span>
+                <span>
                     <input title="Shows cards that are shown in character creator, but have no description. This only applies if you use character creator!"
                            type="checkbox" id="noDescription" name="noDescription"
                            bind:checked={$filter.noDescription}/>
                     <label for="noDescription">No Character Creator description</label>
                 </span>
+            </div>
+            <small>Automatically fix:</small>
+            <div class="rowflow">
+                <button on:click={() => removeTriggers = true} disabled={$cardsWithEmptyTriggers.length === 0}>Remove All Empty Triggers</button>
+            </div>
         </section>
     {:else}
         <section class="triggers">
@@ -205,3 +212,19 @@
         </section>
     {/if}
 </nav>
+{#if removeTriggers}
+    <Modal title="Remove empty triggers from {$cardsWithEmptyTriggers.length} card{$cardsWithEmptyTriggers.length === 1 ? "" : "s"}?"
+           options={["Yes","No"]}
+           on:optionYes={() => {removeTriggers = false; controller.removeEmptyTriggers();}}
+           on:optionNo={() => removeTriggers = false}
+           on:close={() => removeTriggers = false}>
+        <p>Are you sure you want to remove empty triggers from ALL cards?</p>
+        <p>The following cards will be affected:</p>
+        <ul>
+            {#each $cardsWithEmptyTriggers as card}
+                <li><strong>{card.title}</strong> <em>{card.type}</em></li>
+            {/each}
+        </ul>
+        <em>Hint: to remove an empty trigger from a specific card, you can edit its trigger list.</em>
+    </Modal>
+{/if}
