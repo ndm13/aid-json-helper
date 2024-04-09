@@ -1,10 +1,10 @@
 import {StoryCard} from "../model/StoryCard.ts";
 
-const whitespace = /^\s*$/gm;
+export const WHITESPACE = /^\s*$/gm;
 
 export function emptyTriggers(card: StoryCard): boolean {
     return card.keys.length > 0 &&
-        keys(card).filter(s => whitespace.test(s)).length > 0;
+        keys(card).filter(s => WHITESPACE.test(s)).length > 0;
 }
 
 export function noDescription(card: StoryCard): boolean {

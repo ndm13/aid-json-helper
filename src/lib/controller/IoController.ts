@@ -11,7 +11,6 @@ export default class IoController {
 
     addCard() {
         const currentFilter = get(filter);
-        console.log(currentFilter);
         const singleType = currentFilter.types.length === 1;
         let card = IoController.newCard();
         if (singleType)
@@ -35,10 +34,14 @@ export default class IoController {
                     alert("This file doesn't contain any story cards!  Make sure you have the right file.");
                     return;
                 } else {
-                    if (mode === LoadMode.REPLACE)
-                        cards.set(loaded);
-                    else // append
-                        cards.update(c => [...loaded, ...c]);
+                    switch (mode) {
+                        case LoadMode.REPLACE:
+                            cards.set(loaded);
+                            break;
+                        case LoadMode.APPEND:
+                            cards.update(c => [...loaded, ...c]);
+                            break;
+                    }
                     filter.reset();
                     this.fileName = files[0].name;
                 }
@@ -62,7 +65,7 @@ export default class IoController {
 
         const helper = document.createElement('a') as HTMLAnchorElement;
         const url = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "application/json"}));
-        helper.download = this.fileName ? this.fileName : `storycards-${data.length}.json`;
+        helper.download = this.fileName ?? `storycards-${data.length}.json`;
         helper.href = url;
         helper.click();
         URL.revokeObjectURL(url);
