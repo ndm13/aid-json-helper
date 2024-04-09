@@ -145,7 +145,11 @@
                         <option selected>{t}</option>
                     {/each}
                 </select>
-                <button on:click={() => $filter.types.length = 0}>Clear Types</button>
+                {#if $filter.types.length === 0 && $types.length > 0}
+                    <button on:click={() => $filter.types = $types}>Select All Types</button>
+                {:else}
+                    <button on:click={() => $filter.types = []}>Clear Types</button>
+                {/if}
             </fieldset>
             <button on:click={() => filter.reset()}>Clear Filters</button>
         </section>
@@ -196,7 +200,8 @@
             <small>Automatically fix:</small>
             <div class="rowflow">
                 <button on:click={() => removeTriggers = true} disabled={$cardsWithEmptyTriggers.length === 0}>
-                    Remove All Empty Triggers ({$cardsWithEmptyTriggers.length})</button>
+                    Remove All Empty Triggers ({$cardsWithEmptyTriggers.length})
+                </button>
             </div>
         </section>
     {:else}

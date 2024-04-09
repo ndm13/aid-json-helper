@@ -183,8 +183,8 @@
                 </li>
                 <li>
                     <strong>Card Type:</strong> You can choose to view cards that match specific types. If you want to
-                    quickly deselect all of them, click Clear Types. The list is multiple-selection, which means you
-                    can have more than one type active at once.
+                    quickly deselect all of them, click Clear Types (and go back to all with Select All Types). The list
+                    is multiple-selection, which means you can have more than one type active at once.
                 </li>
                 <li>
                     When you're done, you can click <strong>Clear Filters</strong> to reset to the defaults.
