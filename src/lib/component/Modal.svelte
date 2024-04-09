@@ -7,46 +7,51 @@
 </script>
 
 <style>
-main {
-    box-sizing: border-box;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(127, 127, 127, 0.1);
-    backdrop-filter: blur(1ex);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 99;
-}
+    main {
+        box-sizing: border-box;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(127, 127, 127, 0.1);
+        backdrop-filter: blur(1ex);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99;
+    }
 
-header, footer {
-    display: flex;
-    flex-direction: row;
-    padding: 2ex;
-    place-items: center;
-    gap: 1ex;
-}
-header {
-    justify-content: space-between;
-}
-footer {
-    justify-content: flex-end;
-}
-main > * {
-    width: 80ex;
-    max-width: 100%;
-    background-color: var(--color-dark);
-    padding: 3ex;
-}
+    header, footer {
+        display: flex;
+        flex-direction: row;
+        padding: 2ex;
+        place-items: center;
+        gap: 1ex;
+    }
 
-h3 {
-    padding: 0;
-    margin: 0;
-}
+    header {
+        justify-content: space-between;
+        border-radius: 1ex 1ex 0 0;
+    }
+
+    footer {
+        justify-content: flex-end;
+        border-radius: 0 0 1ex 1ex;
+    }
+
+    main > * {
+        width: 80ex;
+        max-width: 100%;
+        background-color: var(--color-dark);
+        padding: 3ex;
+    }
+
+    h3 {
+        padding: 0;
+        margin: 0;
+    }
 </style>
 
 <main>

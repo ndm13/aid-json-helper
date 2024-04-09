@@ -1,7 +1,7 @@
 <script lang="ts">
     import StoryCard from "./lib/component/StoryCard.svelte";
     import Help from "./lib/component/Help.svelte";
-    import Filter from "./lib/component/Filter.svelte";
+    import FilterPanel from "./lib/component/FilterPanel.svelte";
     import IoPanel from "./lib/component/IoPanel.svelte";
     import {cards, filter, filtered} from "./lib/stores.ts";
 </script>
@@ -39,7 +39,7 @@
     <Help/>
     <IoPanel/>
 </header>
-<Filter/>
+<FilterPanel/>
 <main>
     <em>Showing {$filtered.length} entries out of {$cards.length}</em>
     <!-- Ensure internal changes refresh parent store -->
