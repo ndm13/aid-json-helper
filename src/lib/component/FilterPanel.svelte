@@ -213,7 +213,7 @@
     {/if}
 </nav>
 {#if removeTriggers}
-    <Modal title="Remove empty triggers from {$cardsWithEmptyTriggers.length} card{$cardsWithEmptyTriggers.length === 1 ? "" : "s"}?"
+    <Modal title={`Remove empty triggers from ${$cardsWithEmptyTriggers.length} card${$cardsWithEmptyTriggers.length === 1 ? "" : "s"}?`}
            options={["Yes","No"]}
            on:optionYes={() => {removeTriggers = false; controller.removeEmptyTriggers();}}
            on:optionNo={() => removeTriggers = false}
