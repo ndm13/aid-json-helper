@@ -1,21 +1,30 @@
 import {get} from 'svelte/store';
 import type {StoryCard} from "../model/StoryCard.ts";
 import {cards, filter, filtered} from "../stores.ts";
-import {newCard} from "../util/suppliers.ts";
 
 export enum LoadMode { APPEND, REPLACE }
 
 export enum DownloadType { ALL, FILTERED }
 
 export default class IoController {
-    fileName: string;
+    fileName: string | undefined;
+
     addCard() {
-        cards.update(c => [newCard(), ...c]);
-        filter.update(filter => {
-            if (filter.types.indexOf("placeholder") < 0)
-                filter.types = ["placeholder", ...filter.types];
-            return filter;
-        });
+        const currentFilter = get(filter);
+        console.log(currentFilter);
+        const singleType = currentFilter.types.length === 1;
+        let card = IoController.newCard();
+        if (singleType)
+            card.type = currentFilter.types[0];
+
+        cards.update(c => [card, ...c]);
+
+        if (!singleType)
+            filter.update(filter => {
+                if (filter.types.indexOf("placeholder") < 0)
+                    filter.types = ["placeholder", ...filter.types];
+                return filter;
+            });
     }
 
     async load(files: FileList, mode: LoadMode) {
@@ -57,5 +66,16 @@ export default class IoController {
         helper.href = url;
         helper.click();
         URL.revokeObjectURL(url);
+    }
+
+    static newCard(): StoryCard {
+        return {
+            keys: "",
+            value: "",
+            type: "placeholder",
+            description: "",
+            useForCharacterCreation: true,
+            title: "New Card"
+        };
     }
 }
