@@ -1,9 +1,10 @@
 import {StoryCard} from "../model/StoryCard.ts";
 
 const whitespace = /^\s*$/gm;
+
 export function emptyTriggers(card: StoryCard): boolean {
     return card.keys.length > 0 &&
-        card.keys.split(',').filter(s => whitespace.test(s)).length > 0;
+        keys(card).filter(s => whitespace.test(s)).length > 0;
 }
 
 export function noDescription(card: StoryCard): boolean {
@@ -20,9 +21,29 @@ export function valueContains(card: StoryCard, needle: string): boolean {
 }
 
 export function keysContain(card: StoryCard, needle: string): boolean {
-    return card.keys.split(',').filter(key => caseInsensitiveContains(key, needle)).length > 0;
+    return keys(card).filter(key => caseInsensitiveContains(key, needle)).length > 0;
+}
+
+export function titleCompare(asc: boolean, a: StoryCard, b: StoryCard): number {
+    return caseInsensitiveCompare(asc, a.title, b.title) ? 1 : -1;
+}
+
+export function typeCompare(asc: boolean, a: StoryCard, b: StoryCard): number {
+    return caseInsensitiveCompare(asc, a.type, b.type) ? 1 : -1;
+}
+
+export function lengthCompare(asc: boolean, a: StoryCard, b: StoryCard): number {
+    return asc ? a.value.length - b.value.length : b.value.length - a.value.length;
 }
 
 function caseInsensitiveContains(haystack: string, needle: string) {
     return haystack.toLowerCase().indexOf(needle.toLowerCase()) > -1;
+}
+
+function caseInsensitiveCompare(asc: boolean, a: string, b: string): boolean {
+    return asc ? a.toLowerCase() > b.toLowerCase() : b.toLowerCase() > a.toLowerCase();
+}
+
+function keys(card: StoryCard): string[] {
+    return card.keys.split(',');
 }
