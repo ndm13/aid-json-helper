@@ -8,8 +8,7 @@ export function emptyTriggers(card: StoryCard): boolean {
 }
 
 export function noDescription(card: StoryCard): boolean {
-    return card.useForCharacterCreation == true &&
-        /^(\s*|Notes go here.)$/gm.test(card.description);
+    return card.useForCharacterCreation === true && /^(\s*|Notes go here.)$/g.test(card.description);
 }
 
 export function titleContains(card: StoryCard, needle: string): boolean {
