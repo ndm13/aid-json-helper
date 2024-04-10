@@ -26,7 +26,29 @@ export default class IoController {
             });
     }
 
-    async load(files: FileList, mode: LoadMode) {
+    async loadMd(files: FileList, cc: boolean, type: string) {
+        const loaded: StoryCard[] = [];
+        for (const file of files) {
+            const md = (await file.text()).trim();
+            const name = file.name.split('.').slice(0, -1).join('.');
+            loaded.push({
+                title: name,
+                value: md,
+                type: type,
+                keys: "",
+                useForCharacterCreation: cc,
+                description: md
+            });
+        }
+        cards.update(c => [...loaded, ...c]);
+        if (get(filter).types.indexOf(type) < 0)
+            filter.update(filter => {
+                filter.types.push(type);
+                return filter;
+            });
+    }
+
+    async loadJson(files: FileList, mode: LoadMode) {
         await files[0].text()
             .then((t: string) => JSON.parse(t))
             .then((loaded: StoryCard[]) => {

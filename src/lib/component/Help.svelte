@@ -85,7 +85,13 @@
                     here in the tool. This will let you create sets from scratch or add cards to existing sets.
                 </li>
                 <li>
-                    <strong>Import File</strong> adds an exported JSON file to the current set of cards.
+                    <strong>Import JSON</strong> adds an exported JSON file to the current set of cards.
+                </li>
+                <li>
+                    <strong>Import Markdown</strong> lets you load <a href="https://obsidian.md" target="_blank">Obsidian</a>
+                    Markdown files (and other files that follow that convention) as story cards by using the file name
+                    as the card title and its contents as the entry/description. This is still experimental and may not
+                    work 100% as expected. You'll get a dialog that lets you set some defaults.
                 </li>
                 <li>
                     <strong>Open File</strong> <em>replaces</em> the current set of cards with the contents of an
