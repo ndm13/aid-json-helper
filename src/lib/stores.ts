@@ -1,4 +1,4 @@
-import {writable, derived, get} from 'svelte/store';
+import {writable, derived, get} from "../deps.ts";
 import resettable from "./util/resettable.ts";
 import type {StoryCard} from "./model/StoryCard.ts";
 import type {Filter} from "./model/Filter.ts";
@@ -15,6 +15,7 @@ export const filter = resettable<Filter>(() => {
         types: get(types),
         empty: false,
         noDescription: false,
+        missing: false,
         sort: {
             mode: FilterSortMode.NONE,
             asc: true

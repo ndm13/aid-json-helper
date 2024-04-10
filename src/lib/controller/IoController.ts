@@ -1,4 +1,4 @@
-import {get} from 'svelte/store';
+import {get} from "../../deps.ts";
 import type {StoryCard} from "../model/StoryCard.ts";
 import {cards, filter, filtered} from "../stores.ts";
 

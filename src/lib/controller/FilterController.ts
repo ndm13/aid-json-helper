@@ -1,4 +1,4 @@
-import {derived} from 'svelte/store';
+import {derived} from '../../deps.ts';
 import {cards} from "../stores.ts";
 import {emptyTriggers, WHITESPACE} from "../util/FilterLogic.ts";
 
