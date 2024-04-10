@@ -46,6 +46,7 @@
         max-width: 100%;
         background-color: var(--color-dark);
         padding: 3ex;
+        box-sizing: border-box;
     }
 
     h3 {
