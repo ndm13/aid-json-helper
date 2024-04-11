@@ -209,9 +209,7 @@
             {#each $triggers as trigger}
                 <kbd on:click={() => {filter.reset(); trigger.key === "" ? $filter.empty = true : $filter.key = trigger.key;}}
                      class:plural={trigger.count > 1}
-                     class:overlap={trigger.overlap > 0}>
-                    {trigger.key}{trigger.count > 1 ? " x" + trigger.count : ""}{trigger.overlap > 0 ? " +" + trigger.overlap : ""}
-                </kbd>
+                     class:overlap={trigger.overlap > 0}>{trigger.key}{trigger.count > 1 ? " x" + trigger.count : ""}{trigger.overlap > 0 ? " +" + trigger.overlap : ""}</kbd>
             {:else}
                 <p>No triggers loaded!</p>
             {/each}

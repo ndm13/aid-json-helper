@@ -30,12 +30,12 @@ export default class IoController {
         const loaded: StoryCard[] = [];
         for (const file of files) {
             const md = (await file.text()).trim();
-            const name = file.name.split('.').slice(0, -1).join('.');
+            const name = file.name.split('.').slice(0, -1).join('.').trim();
             loaded.push({
                 title: name,
                 value: md,
                 type: type,
-                keys: "",
+                keys: name,
                 useForCharacterCreation: cc,
                 description: md
             });
