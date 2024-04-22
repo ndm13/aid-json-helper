@@ -49,29 +49,27 @@ export default class IoController {
     }
 
     async loadJson(files: FileList, mode: LoadMode) {
-        await files[0].text()
-            .then((t: string) => JSON.parse(t))
-            .then((loaded: StoryCard[]) => {
-                if (loaded.length === 0) {
-                    alert("This file doesn't contain any story cards!  Make sure you have the right file.");
-                    return;
-                } else {
-                    switch (mode) {
-                        case LoadMode.REPLACE:
-                            cards.set(loaded);
-                            break;
-                        case LoadMode.APPEND:
-                            cards.update(c => [...loaded, ...c]);
-                            break;
-                    }
-                    filter.reset();
-                    this.fileName = files[0].name;
-                }
-            })
-            .catch((e: any) => {
-                alert("There was an error trying to load this file.  Are you sure it's valid?");
-                console.error("Caught error when loading file", e);
-            });
+        const loaded: StoryCard[] = [];
+        for (const file of files) {
+            await file.text()
+                .then((t: string) => JSON.parse(t))
+                .then((cards: StoryCard[]) => loaded.push(...cards));
+        }
+        if (loaded.length === 0) {
+            alert("This file doesn't contain any story cards!  Make sure you have the right file.");
+            return;
+        } else {
+            switch (mode) {
+                case LoadMode.REPLACE:
+                    cards.set(loaded);
+                    break;
+                case LoadMode.APPEND:
+                    cards.update(c => [...loaded, ...c]);
+                    break;
+            }
+            filter.reset();
+            this.fileName = files[0].name;
+        }
     }
 
     download(type: DownloadType) {

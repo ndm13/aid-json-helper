@@ -64,7 +64,7 @@
     </button>
 </section>
 <section class="menu" class:open={dropdown === "from-file"}>
-    <input id="add-file"
+    <input id="add-file" multiple
            accept="application/json,text/json,.json"
            type="file" bind:files={addedFiles}
            on:change={() => controller.loadJson(addedFiles, LoadMode.APPEND)}/>
