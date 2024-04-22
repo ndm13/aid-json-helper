@@ -7,6 +7,10 @@ export function emptyTriggers(card: StoryCard): boolean {
         keys(card).filter(s => WHITESPACE.test(s)).length > 0;
 }
 
+export function aidCleanupFilter(card: StoryCard): boolean {
+    return card.keys.trimEnd().endsWith(',');
+}
+
 export function noDescription(card: StoryCard): boolean {
     return card.useForCharacterCreation === true && /^(\s*|Notes go here.)$/g.test(card.description);
 }

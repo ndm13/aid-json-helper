@@ -5,12 +5,13 @@
     import FilterController from "../controller/FilterController.ts";
 
     const controller = new FilterController();
-    const {triggers, cardsWithEmptyTriggers} = controller;
+    const {triggers, cardsWithOfficialCleanupFail, cardsWithEmptyTriggers} = controller;
 
     enum Tab { FILTER, SORT, ERROR, TRIGGER }
 
     let tab = Tab.FILTER;
     let removeTriggers = false;
+    let aidCleanup = false;
 </script>
 
 <style>
@@ -211,6 +212,9 @@
                 <button on:click={() => removeTriggers = true} disabled={$cardsWithEmptyTriggers.length === 0}>
                     Remove All Empty Triggers ({$cardsWithEmptyTriggers.length})
                 </button>
+                <button on:click={() => aidCleanup = true} disabled={$cardsWithOfficialCleanupFail.length === 0}>
+                    Apply Official Cleanup Fix ({$cardsWithOfficialCleanupFail.length})
+                </button>
             </div>
         </section>
     {:else}
@@ -235,6 +239,35 @@
         <p>The following cards will be affected:</p>
         <ul>
             {#each $cardsWithEmptyTriggers as card}
+                <li><strong>{card.title}</strong> <em>{card.type}</em></li>
+            {/each}
+        </ul>
+        <em>Hint: to remove an empty trigger from a specific card, you can edit its trigger list.</em>
+    </Modal>
+{/if}
+{#if aidCleanup}
+    <Modal title={`Apply cleanup fix to ${$cardsWithOfficialCleanupFail.length} card${$cardsWithOfficialCleanupFail.length === 1 ? "" : "s"}?`}
+           options={["Yes","No"]}
+           on:optionYes={() => {aidCleanup = false; controller.applyCleanupFix();}}
+           on:optionNo={() => aidCleanup = false}
+           on:close={() => aidCleanup = false}>
+        <p>
+            Latitude recently rolled out a fix for some trigger-related bugs intended to catch dangling commas and
+            whitespace. This fix is automatically applied when saving story cards, but does not affect imported or
+            existing cards. You should apply this fix to prevent unexpected behavior in the future. Note that this
+            doesn't remove ALL empty triggers:
+            <a href="https://discord.com/channels/903327676884979802/1231032986414092318/1231367605470625823">this is
+            intentional</a>.
+        </p>
+        <p>
+            <strong>
+                If you need empty trigger behavior, include it via <kbd>, ,</kbd> or <kbd> ,</kbd> at the start of
+                your list of keys!
+            </strong>
+        </p>
+        <p>The following cards will be affected:</p>
+        <ul>
+            {#each $cardsWithOfficialCleanupFail as card}
                 <li><strong>{card.title}</strong> <em>{card.type}</em></li>
             {/each}
         </ul>

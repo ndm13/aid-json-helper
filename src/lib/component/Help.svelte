@@ -237,6 +237,24 @@
                 </li>
             </ul>
             <p>
+                There are also some quick actions available to fix common issues:
+            </p>
+            <ul>
+                <li>
+                    <strong>Remove All Empty Triggers</strong> does what it says on the tin, and shows you a list of all
+                    cards with empty (blank or whitespace) triggers and offers to remove those triggers from those cards
+                    for you. All other triggers will remain in place.
+                </li>
+                <li>
+                    <strong>Apply Official Cleanup Fix</strong> is a more nuanced subset of Remove All Empty Triggers,
+                    taking the same approach Latitude is implementing when saving a story card and only removing the
+                    <em>last</em> trigger if it's empty (blank or whitespace). If there are cards flagged for this fix,
+                    you have two options: if it's a mistake, run the cleanup fix. If it's intentional, move the empty
+                    trigger to the beginning or middle of the trigger list: <em>otherwise it may be removed when editing
+                    your card in AI Dungeon!</em>
+                </li>
+            </ul>
+            <p>
                 Additionally, there's a quick action available to <strong>Remove All Empty Triggers</strong>. This will
                 go through your cards and find the ones that have empty triggers, list them for you, and offer to clear
                 out just the empty trigger part of it. All other triggers will remain in place.
