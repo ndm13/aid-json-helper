@@ -1,6 +1,6 @@
 import {derived} from '../../deps.ts';
 import {cards} from "../stores.ts";
-import {emptyTriggers, WHITESPACE} from "../util/FilterLogic.ts";
+import {aidCleanupFilter, emptyTriggers, WHITESPACE} from "../util/FilterLogic.ts";
 
 type TempTriggerData = {count:number,key?:string,overlap?:number};
 export type TriggerData = {count:number,key:string,overlap:number};
@@ -23,12 +23,22 @@ export default class FilterController {
 
     readonly cardsWithEmptyTriggers = derived(cards, cards => cards.filter(emptyTriggers));
 
+    readonly cardsWithOfficialCleanupFail = derived(cards, cards => cards.filter(aidCleanupFilter));
+
     removeEmptyTriggers() {
         cards.update(c => c.map(card => {
             card.keys = card.keys
                 .split(',')
                 .filter(s => !WHITESPACE.test(s))
                 .join(",");
+            return card;
+        }));
+    }
+
+    applyCleanupFix() {
+        cards.update(c => c.map(card => {
+            if (aidCleanupFilter(card))
+                card.keys = card.keys.trimEnd().slice(0, -1);
             return card;
         }));
     }
