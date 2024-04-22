@@ -221,19 +221,12 @@
             </p>
             <ul>
                 <li>
-                    <strong>Empty triggers:</strong> This will show cards that trigger on whitespace, or on empty text.
-                    The AI will generally ALWAYS load these cards. Most of the time, this isn't what you want.
-                </li>
-                <li>
                     <strong>Missing triggers:</strong> This will show cards with no triggers. The AI will NEVER load
-                    these cards. Most of the time, this also isn't what you want.
+                    these cards if present, and will fail to import these cards when you try.
                 </li>
                 <li>
-                    <strong>No Character Creator description:</strong> <em>If you are using Character Creator,</em> then
-                    it is good practice for every Character Creator card to have a description so players know what
-                    their choice means from a story standpoint. It's not required, just nice. If you are NOT using
-                    Character creator, you can ignore this. Note that it will also match cards with the default text of
-                    <kbd>Notes go here.</kbd>.
+                    <strong>No entry text:</strong> This will show cards that are missing an entry. Besides being
+                    useless, they will also fail to import if you try.
                 </li>
                 <li>
                     <strong>Duplicate dropped on import:</strong> This will show cards that match in both trigger list
@@ -241,6 +234,17 @@
                     all but one will fail to import! If you need duplicate triggers on the same card type, try changing
                     the order of the trigger list: AI Dungeon only cares if the <em>list</em> of keys is identical, not
                     if all the items in the list is the same.
+                </li>
+                <li>
+                    <strong>Empty triggers:</strong> This will show cards that trigger on whitespace, or on empty text.
+                    The AI will generally ALWAYS load these cards. Most of the time, this isn't what you want.
+                </li>
+                <li>
+                    <strong>No Character Creator description:</strong> <em>If you are using Character Creator,</em> then
+                    it is good practice for every Character Creator card to have a description so players know what
+                    their choice means from a story standpoint. It's not required, just nice. If you are NOT using
+                    Character creator, you can ignore this. Note that it will also match cards with the default text of
+                    <kbd>Notes go here.</kbd>.
                 </li>
             </ul>
             <p>

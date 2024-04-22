@@ -188,29 +188,37 @@
         </section>
     {:else if tab === Tab.ERROR}
         <section class="issues">
-            <small>Show cards that match:</small>
+            <small>Issues that will prevent import:</small>
             <div class="rowflow">
                 <span>
-                    <input title="Shows cards with empty. Empty triggers will cause cards to trigger constantly."
-                           type="checkbox" id="empty" name="empty" bind:checked={$filter.empty}/>
-                    <label for="empty">Empty triggers</label>
-                </span>
-                <span>
-                    <input title="Shows cards with missing triggers. Missing triggers will cause cards to never trigger."
+                    <input title="Shows cards with missing triggers. Cards without triggers will fail to import."
                            type="checkbox" id="missing" name="missing" bind:checked={$filter.missing}/>
                     <label for="missing">Missing triggers</label>
                 </span>
                 <span>
-                    <input title="Shows cards that are shown in character creator, but have no description. This only applies if you use character creator!"
-                           type="checkbox" id="noDescription" name="noDescription"
-                           bind:checked={$filter.noDescription}/>
-                    <label for="noDescription">No Character Creator description</label>
+                    <input title="Shows cards with no entry text. Cards with no entry text will fail to import."
+                           type="checkbox" id="noEntryText" name="noEntryText" bind:checked={$filter.noEntryText}/>
+                    <label for="noEntryText">No entry text</label>
                 </span>
                 <span>
                     <input title="Shows cards that overlap in type and triggers. Import will fail for all but one!"
                            type="checkbox" id="duplicateImport" name="duplicateImport"
                            bind:checked={$filter.duplicateImport}/>
                     <label for="duplicateImport">Duplicate dropped on import</label>
+                </span>
+            </div>
+            <small>Issues that affect usability:</small>
+            <div class="rowflow">
+                <span>
+                    <input title="Shows cards with empty triggers. Empty triggers will cause cards to trigger constantly."
+                           type="checkbox" id="empty" name="empty" bind:checked={$filter.emptyTriggers}/>
+                    <label for="empty">Empty triggers</label>
+                </span>
+                <span>
+                    <input title="Shows cards that are shown in character creator, but have no description. This only applies if you use character creator!"
+                           type="checkbox" id="noDescription" name="noDescription"
+                           bind:checked={$filter.noDescription}/>
+                    <label for="noDescription">No Character Creator description</label>
                 </span>
             </div>
             <small>Automatically fix:</small>

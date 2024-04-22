@@ -3,10 +3,11 @@ export type Filter = {
     value: string,
     key: string,
     types: string[],
-    empty: boolean,
     missing: boolean,
-    noDescription: boolean,
+    noEntryText: boolean,
     duplicateImport: boolean,
+    emptyTriggers: boolean,
+    noDescription: boolean,
     sort: {
         mode: FilterSortMode,
         asc: boolean

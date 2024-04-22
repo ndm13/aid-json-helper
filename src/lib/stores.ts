@@ -13,10 +13,11 @@ export const filter = resettable<Filter>(() => {
         value: "",
         key: "",
         types: get(types),
-        empty: false,
-        noDescription: false,
-        duplicateImport: false,
         missing: false,
+        noEntryText: false,
+        duplicateImport: false,
+        emptyTriggers: false,
+        noDescription: false,
         sort: {
             mode: FilterSortMode.NONE,
             asc: true
@@ -31,11 +32,18 @@ export const filtered = derived([cards, filter], ([cards, filter]) => {
             FilterLogic.valueContains(card, filter.value) &&
             FilterLogic.keysContain(card, filter.key) &&
             (
-                (!filter.missing && !filter.empty && !filter.noDescription && !filter.duplicateImport) ||
+                (
+                    !filter.missing &&
+                    !filter.noEntryText &&
+                    !filter.emptyTriggers &&
+                    !filter.noDescription &&
+                    !filter.duplicateImport
+                ) ||
                 (filter.missing && card.keys.length === 0) ||
-                (filter.empty && FilterLogic.emptyTriggers(card)) ||
-                (filter.noDescription && FilterLogic.noDescription(card)) ||
-                (filter.duplicateImport && FilterLogic.duplicateImport(card, cards))
+                (filter.noEntryText && card.value.length === 0) ||
+                (filter.duplicateImport && FilterLogic.duplicateImport(card, cards)) ||
+                (filter.emptyTriggers && FilterLogic.emptyTriggers(card)) ||
+                (filter.noDescription && FilterLogic.noDescription(card))
             )
         );
     return filter.sort.mode === FilterSortMode.NONE ? filtered : filtered
