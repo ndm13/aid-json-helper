@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {filter, types} from "../stores.ts";
+    import {cards, filter, types} from "../stores.ts";
     import {FilterSortMode} from "../model/Filter.ts";
     import Modal from "./Modal.svelte";
     import FilterController from "../controller/FilterController.ts";
@@ -85,6 +85,11 @@
         background-color: #840;
     }
 
+    .triggers p {
+        text-align: center;
+        width: 100%;
+    }
+
     .tabs {
         display: flex;
         flex-direction: row;
@@ -130,28 +135,32 @@
     </div>
     {#if tab === Tab.FILTER}
         <section class="filter">
-            <fieldset class="searchWithin">
-                <label for="title">Title:</label>
-                <input name="title" id="title" bind:value={$filter.title}/>
-                <label for="entry">Entry:</label>
-                <input name="entry" id="entry" bind:value={$filter.value}/>
-                <label for="triggers">Trigger:</label>
-                <input name="triggers" id="triggers" bind:value={$filter.key}/>
-            </fieldset>
-            <fieldset class="type">
-                <label for="type">Type:</label>
-                <select name="type" multiple bind:value={$filter.types}>
-                    {#each $types as t}
-                        <option selected>{t}</option>
-                    {/each}
-                </select>
-                {#if $filter.types.length === 0 && $types.length > 0}
-                    <button on:click={() => $filter.types = $types}>Select All Types</button>
-                {:else}
-                    <button on:click={() => $filter.types = []}>Clear Types</button>
-                {/if}
-            </fieldset>
-            <button on:click={() => filter.reset()}>Clear Filters</button>
+            {#if $cards.length === 0}
+                <p>No cards loaded: nothing to filter!</p>
+            {:else}
+                <fieldset class="searchWithin">
+                    <label for="title">Title:</label>
+                    <input name="title" id="title" bind:value={$filter.title}/>
+                    <label for="entry">Entry:</label>
+                    <input name="entry" id="entry" bind:value={$filter.value}/>
+                    <label for="triggers">Trigger:</label>
+                    <input name="triggers" id="triggers" bind:value={$filter.key}/>
+                </fieldset>
+                <fieldset class="type">
+                    <label for="type">Type:</label>
+                    <select name="type" multiple bind:value={$filter.types}>
+                        {#each $types as t}
+                            <option selected>{t}</option>
+                        {/each}
+                    </select>
+                    {#if $filter.types.length === 0 && $types.length > 0}
+                        <button on:click={() => $filter.types = $types}>Select All Types</button>
+                    {:else}
+                        <button on:click={() => $filter.types = []}>Clear Types</button>
+                    {/if}
+                </fieldset>
+                <button on:click={() => filter.reset()}>Clear Filters</button>
+            {/if}
         </section>
     {:else if tab === Tab.SORT}
         <section class="sort">
