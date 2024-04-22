@@ -6,6 +6,7 @@ export type Filter = {
     empty: boolean,
     missing: boolean,
     noDescription: boolean,
+    duplicateImport: boolean,
     sort: {
         mode: FilterSortMode,
         asc: boolean

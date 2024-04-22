@@ -11,6 +11,10 @@ export function aidCleanupFilter(card: StoryCard): boolean {
     return card.keys.trimEnd().endsWith(',');
 }
 
+export function duplicateImport(card: StoryCard, cards: StoryCard[]): boolean {
+    return cards.find(needle => needle != card && card.type === needle.type && card.keys === needle.keys) !== undefined;
+}
+
 export function noDescription(card: StoryCard): boolean {
     return card.useForCharacterCreation === true && /^(\s*|Notes go here.)$/g.test(card.description);
 }

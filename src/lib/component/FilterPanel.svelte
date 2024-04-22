@@ -206,6 +206,12 @@
                            bind:checked={$filter.noDescription}/>
                     <label for="noDescription">No Character Creator description</label>
                 </span>
+                <span>
+                    <input title="Shows cards that overlap in type and triggers. Import will fail for all but one!"
+                           type="checkbox" id="duplicateImport" name="duplicateImport"
+                           bind:checked={$filter.duplicateImport}/>
+                    <label for="duplicateImport">Duplicate dropped on import</label>
+                </span>
             </div>
             <small>Automatically fix:</small>
             <div class="rowflow">

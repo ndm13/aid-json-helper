@@ -235,6 +235,13 @@
                     Character creator, you can ignore this. Note that it will also match cards with the default text of
                     <kbd>Notes go here.</kbd>.
                 </li>
+                <li>
+                    <strong>Duplicate dropped on import:</strong> This will show cards that match in both trigger list
+                    and card type. Because of how AI Dungeon checks for duplicate cards, if any cards match this filter,
+                    all but one will fail to import! If you need duplicate triggers on the same card type, try changing
+                    the order of the trigger list: AI Dungeon only cares if the <em>list</em> of keys is identical, not
+                    if all the items in the list is the same.
+                </li>
             </ul>
             <p>
                 There are also some quick actions available to fix common issues:
