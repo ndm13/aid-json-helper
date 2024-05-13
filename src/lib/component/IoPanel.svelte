@@ -1,7 +1,8 @@
 <script lang="ts">
     import Modal from "./Modal.svelte";
-    import {cards, filter} from "../stores.ts";
+    import {cards, filter, filtered} from "../stores.ts";
     import IoController, {DownloadType, LoadMode} from "../controller/IoController.ts";
+    import type {StoryCard} from "../model/StoryCard";
 
     const controller = new IoController();
 
@@ -11,8 +12,19 @@
 
     let openWarn = false;
     let clearWarn = false;
+    let saveMode = null;
+    let saveModeWarn = false, saveProblems: { dropped: StoryCard[]; dupe: StoryCard[] } = {dropped: [], dupe: []};
     let mdImport = false;
     let mdCC = true, mdType = "Markdown";
+
+    $: if (saveMode !== null) {
+        saveProblems = controller.checkProblemCards(saveMode);
+        saveModeWarn = saveProblems.dropped.length > 0 || saveProblems.dupe.length > 0;
+        if (!saveModeWarn) {
+            controller.download(saveMode);
+            saveMode = undefined;
+        }
+    }
 
     filter.subscribe(filter => {
         if (filter.types.length === 1)
@@ -44,6 +56,7 @@
         margin-left: 1ex;
         transform: rotate(90deg);
     }
+
     .toggle.open:after {
         transform: rotate(-90deg);
     }
@@ -51,16 +64,21 @@
     .open {
         background-color: var(--color-light);
     }
+
     section.menu {
         padding: 1ex;
         border-radius: 1ex;
         overflow: hidden;
     }
+
     section.menu:not(.open) {
         display: none;
     }
-</style>
 
+    ul {
+        text-align: left;
+    }
+</style>
 <section>
     <button on:click={() => controller.addCard()}>New Card</button>
     <button class="toggle" class:open={dropdown === "from-file"}
@@ -97,10 +115,12 @@
 </section>
 <section class="menu" class:open={dropdown === "save"}>
     <button disabled={$cards.length === 0}
-            on:click={() => controller.download(DownloadType.ALL)}>Save All Cards
+            on:click={() => saveMode = DownloadType.ALL}>
+        Save All Cards
     </button>
-    <button disabled={$cards.length === 0}
-            on:click={() => controller.download(DownloadType.FILTERED)}>Save Filtered Cards
+    <button disabled={$filtered.length === 0}
+            on:click={() => saveMode = DownloadType.FILTERED}>
+        Save Filtered Cards
     </button>
 </section>
 {#if openWarn}
@@ -123,6 +143,32 @@
         <em>Hint: to remove a specific card, use the icon in the top-left corner of the card.</em>
     </Modal>
 {/if}
+{#if saveModeWarn}
+    <Modal title="Save incompatible cards?"
+           options={["Yes","No"]}
+           on:optionYes={() => {controller.download(saveMode); saveMode = null; saveModeWarn = false}}
+           on:optionNo={() => {saveMode = null; saveModeWarn = false}}
+           on:close={() => {saveMode = null; saveModeWarn = false}}>
+        <p>Errors were detected in these cards that will affect import into AI Dungeon.</p>
+        {#if saveProblems.dropped.length > 0}
+            <p>The following cards will fail to import:</p>
+            <ul>
+                {#each saveProblems.dropped as card}
+                    <li><strong>{card.title}</strong> <em>{card.type}</em></li>
+                {/each}
+            </ul>
+        {/if}
+        {#if saveProblems.dupe.length > 0}
+            <p>The following cards will be considered duplicates - only one will load:</p>
+            <ul>
+                {#each saveProblems.dupe as card}
+                    <li><strong>{card.title}</strong> <em>{card.type}</em></li>
+                {/each}
+            </ul>
+        {/if}
+        <p>Cards exported this way will load as expected in this tool, but not in AI Dungeon. Really export?</p>
+    </Modal>
+{/if}
 {#if mdImport}
     <Modal title="Import Markdown files"
            options={["Select Files","Cancel"]}
@@ -130,14 +176,19 @@
            on:optionCancel={() => mdImport = false}
            on:close={() => mdImport = false}>
         <p>
-            <a href="https://obsidian.md/" target="_blank">Obsidian</a> is a text-based note taking app with lots of
-            features for managing relationships between documents, known as cards within the app. These cards are stored
-            as Markdown (.md) files with a file name that reflects that card's title. We can try to load these cards as
-            AI Dungeon story cards by mapping the file name to the card name and the file contents to the card entry and
+            <a href="https://obsidian.md/" target="_blank">Obsidian</a> is a text-based note taking app with
+            lots of
+            features for managing relationships between documents, known as cards within the app. These cards
+            are stored
+            as Markdown (.md) files with a file name that reflects that card's title. We can try to load these
+            cards as
+            AI Dungeon story cards by mapping the file name to the card name and the file contents to the card
+            entry and
             description.
         </p>
         <p>
-            Note that any Markdown/Obsidian features such as links and tags will render as plain text and will need to
+            Note that any Markdown/Obsidian features such as links and tags will render as plain text and will
+            need to
             be edited to avoid confusing the AI.
         </p>
         <p>

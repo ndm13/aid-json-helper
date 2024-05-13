@@ -116,6 +116,8 @@
                             being shown by the active filter.
                         </li>
                     </ul>
+                    Note that attempting to save any cards that would normally fail to import into AI Dungeon will show
+                    an error. You can choose to ignore this, but you WILL lose some cards on import if you continue!
                 </li>
                 <li>
                     <strong>Clear Cards</strong> removes every card in the current session. Don't worry, this one comes

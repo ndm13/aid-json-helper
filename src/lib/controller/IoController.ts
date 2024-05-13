@@ -72,6 +72,21 @@ export default class IoController {
         }
     }
 
+    checkProblemCards(type: DownloadType) {
+        let data: StoryCard[];
+        switch (type) {
+            case DownloadType.ALL:
+                data = get(cards);
+                break;
+            case DownloadType.FILTERED:
+                data = get(filtered);
+                break;
+        }
+        const dropped = data.filter(c => c.keys === "" || c.value === "");
+        const dupe = data.filter(c => data.find(c2 => c !== c2 && c.type === c2.type && c.keys === c2.keys));
+        return { dropped, dupe };
+    }
+
     download(type: DownloadType) {
         let data: StoryCard[];
         switch (type) {
