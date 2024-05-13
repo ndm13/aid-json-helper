@@ -27,7 +27,7 @@ body {
 
 #app {
     max-width: 100%;
-    width: fit-content;
+    width: 55em;
     box-sizing: border-box;
     margin: 0 auto;
     padding: 2rem;
