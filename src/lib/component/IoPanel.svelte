@@ -38,6 +38,16 @@
         display: none;
     }
 
+    .toggle:after {
+        content: '>';
+        display: inline-block;
+        margin-left: 1ex;
+        transform: rotate(90deg);
+    }
+    .toggle.open:after {
+        transform: rotate(-90deg);
+    }
+
     .open {
         background-color: var(--color-light);
     }
@@ -53,14 +63,17 @@
 
 <section>
     <button on:click={() => controller.addCard()}>New Card</button>
-    <button class:open={dropdown === "from-file"}
+    <button class="toggle" class:open={dropdown === "from-file"}
             on:click={() => dropdown = dropdown === "from-file" ? undefined : "from-file"}>
-        From File {dropdown === "from-file" ? '⮝' : '⮟'}</button>
-    <button class:open={dropdown === "save"} disabled={$cards.length === 0 && dropdown !== "save"}
+        From File
+    </button>
+    <button class="toggle" class:open={dropdown === "save"} disabled={$cards.length === 0 && dropdown !== "save"}
             on:click={() => dropdown = dropdown === "save" ? undefined : "save"}>
-        Save {dropdown === "save" ? '⮝' : '⮟'}</button>
+        Save
+    </button>
     <button disabled={$cards.length === 0}
-            on:click={() => clearWarn = true}>Clear Cards
+            on:click={() => clearWarn = true}>
+        Clear Cards
     </button>
 </section>
 <section class="menu" class:open={dropdown === "from-file"}>
