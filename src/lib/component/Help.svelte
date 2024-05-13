@@ -85,25 +85,37 @@
                     here in the tool. This will let you create sets from scratch or add cards to existing sets.
                 </li>
                 <li>
-                    <strong>Import JSON</strong> adds an exported JSON file to the current set of cards.
+                    The <strong>From File</strong> menu lets you import cards that you've stored locally:
+                    <ul>
+                        <li>
+                            <strong>Import JSON</strong> adds an exported JSON file to the current set of cards.
+                        </li>
+                        <li>
+                            <strong>Import Markdown...</strong> lets you load
+                            <a href="https://obsidian.md" target="_blank">Obsidian</a> Markdown files (and other files
+                            that follow that convention) as story cards by using the file name as the card title and its
+                            contents as the entry/description. This is still experimental and may not work 100% as
+                            expected. You'll get a dialog that lets you set some defaults.
+                        </li>
+                        <li>
+                            <strong>Open File</strong> <em>replaces</em> the current set of cards with the contents of
+                            an exported JSON file. You'll get a nice warning to confirm that this is what you want to
+                            do.
+                        </li>
+                    </ul>
                 </li>
                 <li>
-                    <strong>Import Markdown</strong> lets you load <a href="https://obsidian.md" target="_blank">Obsidian</a>
-                    Markdown files (and other files that follow that convention) as story cards by using the file name
-                    as the card title and its contents as the entry/description. This is still experimental and may not
-                    work 100% as expected. You'll get a dialog that lets you set some defaults.
-                </li>
-                <li>
-                    <strong>Open File</strong> <em>replaces</em> the current set of cards with the contents of an
-                    exported JSON file. You'll get a nice warning to confirm that this is what you want to do.
-                </li>
-                <li>
-                    <strong>Save All Cards</strong> writes all the cards in the current session to a JSON file that is
-                    compatible with AI Dungeon (and this tool, obviously).
-                </li>
-                <li>
-                    <strong>Save Filtered Cards</strong> does the same thing, but only for the cards that are being
-                    shown by the active filter.
+                    The <strong>Save</strong> menu lets you export cards that are currently loaded:
+                    <ul>
+                        <li>
+                            <strong>Save All Cards</strong> writes all the cards in the current session to a JSON file
+                            that is compatible with AI Dungeon (and this tool, obviously).
+                        </li>
+                        <li>
+                            <strong>Save Filtered Cards</strong> does the same thing, but only for the cards that are
+                            being shown by the active filter.
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <strong>Clear Cards</strong> removes every card in the current session. Don't worry, this one comes
