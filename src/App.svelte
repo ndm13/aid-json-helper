@@ -44,7 +44,13 @@
     <em>Showing {$filtered.length} entries out of {$cards.length}</em>
     <!-- Ensure internal changes refresh parent store -->
     {#each $filtered as card}
-        <StoryCard card={card}
+        <StoryCard {card}
+                   on:reorder={e => cards.update(c => {
+                       const pluck = c[e.detail.old];
+                       c.splice(e.detail.old, 1);
+                       c.splice(e.detail.current, 0, pluck);
+                       return c;
+                   })}
                    on:update={() => cards.update(c => c)}
                    on:delete={() => cards.update(c => c.filter(c => c !== card))}/>
     {:else}

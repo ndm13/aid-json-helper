@@ -54,3 +54,8 @@ button:disabled {
     color: #aaa;
     pointer-events: none;
 }
+
+input:focus-visible, textarea:focus-visible {
+    border-color: var(--color-highlight) !important;
+    outline: none !important;
+}

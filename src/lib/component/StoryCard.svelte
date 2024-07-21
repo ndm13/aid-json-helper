@@ -3,9 +3,13 @@
     import type {StoryCard} from "../model/StoryCard.ts";
     import Modal from "./Modal.svelte";
     import StoryCardController from "../controller/StoryCardController.ts";
+    import {cards} from "../stores";
 
     const dispatch = createEventDispatcher();
     export let card: StoryCard;
+    let index = $cards.findIndex(c => c === card) + 1;
+    let newIndex = index;
+    console.log(card.title, 'has an index of', index);
 
     $: controller = new StoryCardController(card);
 
@@ -14,6 +18,19 @@
     let showDescription = false;
     let fullScreen = false;
     let deleting = false;
+
+    function reorder() {
+        if (newIndex > $cards.length) newIndex = $cards.length;
+        if (newIndex < 1) newIndex = 0;
+        if (newIndex !== index) {
+            dispatch("reorder", {
+                old: index - 1,
+                current: newIndex - 1
+            });
+            newIndex = index;
+            actionMenu = !actionMenu;
+        }
+    }
 </script>
 
 <style>
@@ -116,15 +133,34 @@
         background-color: var(--color-highlight);
         color: black;
     }
+
+    .reorder input {
+        border-radius: 1ex 0 0 1ex;
+        line-height: 1.5em;
+        padding: 1ex 0 1ex 1ex;
+        margin-right: 0;
+        border: 1px solid var(--color-light);;
+    }
+
+    .reorder button {
+        border-radius: 0 1ex 1ex 0;
+        margin-left: 0;
+    }
 </style>
 
 <section class:fullScreen>
     <header class:actionMenu>
         <button title="Toggle actions" on:click={() => actionMenu = !actionMenu}>⋯</button>
         {#if actionMenu}
-            <button on:click={() => deleting = true}>Delete</button>
-            <button on:click={() => controller.copyJson()}>Copy JSON</button>
-            <button on:click={() => controller.copyMarkdown()}>Copy Markdown</button>
+            <span class="reorder">
+                <input type="number" min="1" max="{$cards.length + 1}"
+                       bind:value={newIndex}
+                       on:keyup={e => {if (e.key === "Enter") reorder()}}/>
+                <button on:click={reorder}>Reorder</button>
+            </span>
+            <button on:click={() => {deleting = true; actionMenu = !actionMenu;}}>Delete</button>
+            <button on:click={() => {controller.copyJson(); actionMenu = !actionMenu;}}>Copy JSON</button>
+            <button on:click={() => {controller.copyMarkdown(); actionMenu = !actionMenu;}}>Copy Markdown</button>
         {:else}
             <button class:is_cc={card.useForCharacterCreation}
                     title="Use for Character Creator [currently {card.useForCharacterCreation}]"
