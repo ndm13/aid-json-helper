@@ -1,6 +1,6 @@
 <script lang="ts">
     import Modal from "./Modal.svelte";
-    import {cards, filter, filtered} from "../stores.ts";
+    import {autosave, cards, filter, filtered} from "../stores.ts";
     import IoController, {DownloadType, LoadMode} from "../controller/IoController.ts";
     import type {StoryCard} from "../model/StoryCard";
 
@@ -92,6 +92,9 @@
     <button disabled={$cards.length === 0}
             on:click={() => clearWarn = true}>
         Clear Cards
+    </button>
+    <button on:click={() => $autosave = !$autosave}>
+        {$autosave ? "Disable" : "Enable"} Autosave
     </button>
 </section>
 <section class="menu" class:open={dropdown === "from-file"}>

@@ -18,6 +18,8 @@
         position: fixed;
         box-sizing: border-box;
         overflow: auto;
+        padding-left: 1em;
+        padding-right: 1em;
         top: 0;
         left: 0;
         right: 0;
@@ -123,6 +125,13 @@
                     <strong>Clear Cards</strong> removes every card in the current session. Don't worry, this one comes
                     with a nice warning too. Refreshing the page will do the same thing, but without warning you!
                 </li>
+                <li>
+                    <strong>Enable/Disable Autosave</strong> will write all updates to local storage (managed by your
+                    browser) in real time. This means that if you refresh the page, your changes should still be there.
+                    If Autosave is disabled, <em>no data will be written locally</em>, and refreshing the page will make
+                    your changes unrecoverable! You can (and should) always save manually with the Save menu. <em>Note:
+                    changes will not persist through private browsing sessions in most browsers.</em>
+                </li>
             </ul>
             <h3>That's good and all, but how do I edit a story card?</h3>
             <p>
@@ -140,6 +149,11 @@
                 <li>
                     The ⋯ icon toggles a drawer of card actions.
                     <ul>
+                        <li>
+                            <strong>Reorder</strong> lets you change the position of the story card in the set. The
+                            number shows the current position: edit the value and press Enter or tap the Reorder button
+                            to move it in the list!
+                        </li>
                         <li>
                             <strong>Delete</strong> lets you delete a story card. It pops up a nice big warning message
                             asking if you're sure, just to be safe. Clicking yes on the sample card won't have any

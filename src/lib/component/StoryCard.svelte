@@ -9,7 +9,6 @@
     export let card: StoryCard;
     let index = $cards.findIndex(c => c === card) + 1;
     let newIndex = index;
-    console.log(card.title, 'has an index of', index);
 
     $: controller = new StoryCardController(card);
 

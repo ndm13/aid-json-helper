@@ -5,9 +5,19 @@ import type {Filter} from "./model/Filter.ts";
 import {FilterSortMode} from "./model/Filter.ts";
 import * as FilterLogic from "./util/FilterLogic.ts";
 
-export const cards = writable<StoryCard[]>([]);
-export const types = derived(cards, cards => [...new Set(cards.map(c => c.type))]);
-export const filter = resettable<Filter>(() => {
+export const autosave = writable<boolean>(localStorage.getItem('autosave') !== null);
+function getStoryCards() {
+    if (get(autosave)) {
+        const ls = localStorage.getItem('cards');
+        if (ls) return JSON.parse(ls);
+    }
+    return [];
+}
+function getFilters() {
+    if (get(autosave)) {
+        const ls = localStorage.getItem('filters');
+        if (ls) return JSON.parse(ls);
+    }
     return structuredClone({
         title: "",
         value: "",
@@ -23,7 +33,37 @@ export const filter = resettable<Filter>(() => {
             asc: true
         }
     });
+}
+export const cards = writable<StoryCard[]>(getStoryCards());
+export const types = derived(cards, cards => [...new Set(cards.map(c => c.type))]);
+export const filter = resettable<Filter>(getFilters);
+
+let autosaveSub = () => {};
+autosave.subscribe(a => {
+    if (a) {
+        if (localStorage.getItem('autosave')) {
+            const ls = localStorage.getItem('cards');
+            if (ls) cards.update(_ => JSON.parse(ls));
+        } else {
+            localStorage.setItem('autosave', 'true');
+            localStorage.setItem('cards', JSON.stringify(get(cards)));
+            localStorage.setItem('filters', JSON.stringify(get(filter)));
+        }
+        const cardSub = cards.subscribe(c => localStorage.setItem('cards', JSON.stringify(c)));
+        const filterSub = filter.subscribe(f => localStorage.setItem('filters', JSON.stringify(f)));
+        autosaveSub = () => {
+            cardSub();
+            filterSub();
+        };
+    }
 });
+autosave.subscribe(a => {
+    if (!a) {
+        localStorage.clear();
+        autosaveSub();
+    }
+})
+
 export const filtered = derived([cards, filter], ([cards, filter]) => {
     const filtered = cards
         .filter(card =>
