@@ -12,12 +12,15 @@ download and run it yourself by cloning this repository and installing Deno.  If
 provide something pre-built, but you could also download the files that are
 [hosted live](https://github.com/ndm13/aid-json-helper/tree/gh-pages) and use those directly.
 
+If you need help using the tool itself, there's a handy button in the header that goes into much more detail than I
+would want to put in a readme.
+
 Built using [create-vite-extra](https://github.com/bluwy/create-vite-extra/tree/master/template-deno-svelte-ts)'s
 Deno/Svelte template.
 
 ## Running
 
-This project is built on Deno v1.41.x.
+This project is built on Deno v1.45.x.
 
 Start a dev server:
 

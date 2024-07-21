@@ -35,7 +35,7 @@
 </style>
 
 <header>
-    <h2>Story Card Viewer/Editor</h2>
+    <h2>AI Dungeon Story Card Tools</h2>
     <Help/>
     <IoPanel/>
 </header>
